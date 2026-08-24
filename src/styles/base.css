@@ -119,18 +119,6 @@ video {
   }
 }
 
-/* --- Utility: inline text link (prose links, not buttons/nav) ------------ */
-.text-link {
-  color: var(--color-accent);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-  text-decoration-thickness: 1px;
-  transition: color var(--dur-fast) var(--ease-out-soft);
-}
-.text-link:hover {
-  color: var(--color-ink);
-}
-
 /* --- Utility: screen-reader only ----------------------------------------- */
 .sr-only {
   position: absolute;
