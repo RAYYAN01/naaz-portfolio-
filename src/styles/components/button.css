@@ -34,11 +34,19 @@
     color var(--dur-base) var(--ease-out-soft);
 }
 
-/* The wipe: a steel-blue disc that scales up from the pointer's side. */
+/* The wipe: a steel-blue disc that scales up from the pointer's side.
+   Taller than the button and bottom-anchored, with its own top edge masked
+   to a soft fade — the extra height keeps that feathered edge pushed above
+   the button's clip region (masked out entirely) once fully revealed, so
+   only the slide itself shows the fade. Without this, any frame caught
+   mid-slide (a screenshot, a slow trackpad, reduced frame rates) shows a
+   hard flat seam cutting across the pill instead of a gesture in progress. */
 .btn::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 140%;
   z-index: -1;
   background: linear-gradient(
     120deg,
@@ -46,7 +54,9 @@
     var(--color-steel-500) 55%,
     var(--color-steel-400)
   );
-  transform: translate3d(0, 101%, 0);
+  mask-image: linear-gradient(to bottom, transparent, black 16%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 16%);
+  transform: translate3d(0, 115%, 0);
   transition: transform var(--dur-base) var(--ease-out-expo);
 }
 
