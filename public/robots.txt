@@ -1,4 +1,30 @@
 User-agent: *
 Allow: /
 
+# AI answer-engine and assistant crawlers — explicitly welcomed, not just
+# covered by the wildcard above, since several check for a named rule first.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://naazailabs.com/sitemap.xml

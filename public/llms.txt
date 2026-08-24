@@ -1,0 +1,34 @@
+# Naaz AI Labs
+
+> Artificial intelligence research and development studio in Bengaluru, India. Builds bespoke AI systems, CRMs, automation, and web platforms for real estate, resorts, travel agencies, CRM-heavy businesses, hospitality, finance, event management, and education — and Lynq, a productised AI-workforce subscription for WhatsApp, web chat, and phone.
+
+Founded by Mohammed Rayhan (Founder & CEO). Studio located in JP Nagar, Bengaluru, Karnataka, India. Support hours Mon–Sat, 10am–7pm IST. Contact: mohammedrayan@naazailabs.com, +91 97319 85934.
+
+Every bespoke industry build ships in one of three delivery bands — Standard, Intermediate, Premium — each escalating in scope (Standard: a fast, credible web platform; Intermediate: adds CRM, bookings, and automation; Premium: adds AI voice agents, prediction, and document AI).
+
+## Product
+
+- [Lynq](https://naazailabs.com/lynq.html): Productised AI workforce on WhatsApp, website chat, and phone — answers from a business's own documents, qualifies leads, books appointments, runs outbound campaigns. Three plans: Receptionist ₹11,999/mo (chat only), Sales Associate ₹29,999/mo (chat + voice, most popular), Sales Manager ₹74,999/mo (all channels, white-label). Prices exclude 18% GST; annual billing saves 15%. Runs on Google Gemini. Data stored in India (DPDP Act compliant). Supports English, Hindi, Kannada, Tamil, and more, auto-detected mid-conversation.
+
+## Industries served
+
+- [Real Estate](https://naazailabs.com/solutions.html#real-estate): Listings, CRM, and AI voice agents for property businesses.
+- [Resort](https://naazailabs.com/solutions.html#resort): Booking platforms, guest CRM, and AI concierge for hospitality properties.
+- [Travel Agency](https://naazailabs.com/solutions.html#travel): Package listings, booking engines, and AI trip planning.
+- [CRM Systems](https://naazailabs.com/solutions.html#crm): Bespoke CRM builds with workflow automation and AI assistants.
+- [Hospitality](https://naazailabs.com/solutions.html#hospitality): Front desk, restaurant, and reservation systems on one spine.
+- [Finance](https://naazailabs.com/solutions.html#finance): Loan origination, KYC automation, and document AI for financial services.
+- [Event Management](https://naazailabs.com/solutions.html#events): Registration, vendor coordination, and ticketing systems.
+- [Education](https://naazailabs.com/solutions.html#education): Admissions CRM, learning management, and AI teaching assistants.
+
+## Company
+
+- [About](https://naazailabs.com/about.html): Studio background, vision, mission, and reach.
+- [Selected Work](https://naazailabs.com/work.html): Real, named client projects with live links — Yogi Tours & Travels, Renuka Tours & Travels, Sushi Tours & Travels, Ariston Developers, AV-TEC, Murudeshwara, and others.
+- [Technology](https://naazailabs.com/technology.html): The stack — TypeScript, React, Next.js, Node, Python, GSAP, OpenAI, Claude, Gemini, AWS, Cloudflare.
+- [Process](https://naazailabs.com/process.html): Thirteen delivery phases from discovery to ongoing support.
+- [Contact](https://naazailabs.com/contact.html): Start a project — real scope (tier, timeline, team) within one business day.
+
+## Guarantees
+
+Live in 7 days from advance payment. No lock-in — monthly plans cancel with 15 days written notice. 100% refund if a system does not go live, in writing on every proposal. Support in 6 Indian languages, auto-detected mid-conversation.
