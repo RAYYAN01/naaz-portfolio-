@@ -36,6 +36,11 @@ export const projects = [
     summary:
       'An AI workforce on WhatsApp, web chat, and phone lines. Answers from client documents, qualifies leads, books appointments, and runs outbound call campaigns.',
     live: 'https://lynq.naazailabs.com',
+    screenshot: true,
+    // Extra product screenshots beyond the cover — filenames under
+    // public/img/work/, shown in a lightbox when the card's media is
+    // clicked. See render.js renderProjects() and src/js/modules/gallery.js.
+    gallery: ['lynq-platform-2.jpg'],
   },
   {
     slug: 'yogi-tours-and-travels',

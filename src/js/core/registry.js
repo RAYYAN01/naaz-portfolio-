@@ -20,6 +20,7 @@ const registry = {
   splitText: () => import('../modules/split-text.js'),
   contactForm: () => import('../modules/contact-form.js'),
   spider: () => import('../modules/spider.js'),
+  gallery: () => import('../modules/gallery.js'),
 };
 
 const mounted = new WeakMap();

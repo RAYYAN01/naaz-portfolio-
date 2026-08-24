@@ -177,6 +177,121 @@
   color: var(--color-ivory-200);
 }
 
+/* Gallery cue — a small corner pill on cards that open a screenshot
+   lightbox on click (see gallery.js). Sits opposite the status stamp so the
+   two never compete when a project somehow has both. */
+.project__media[role='button'] {
+  cursor: pointer;
+}
+.project__gallery-cue {
+  position: absolute;
+  inset-block-end: 0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--color-navy-950) 60%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ivory-200);
+  transition: background var(--dur-base) var(--ease-out-soft);
+}
+.project:hover .project__gallery-cue {
+  background: color-mix(in oklab, var(--color-navy-950) 78%, transparent);
+}
+
+/* --- Lightbox — click-to-open project screenshots ------------------------- */
+body.lightbox-open {
+  overflow: hidden;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+}
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox__scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--color-navy-950) 88%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.lightbox__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  max-inline-size: min(90vw, 72rem);
+  max-block-size: 90vh;
+  padding: var(--space-gutter);
+}
+
+.lightbox__img {
+  max-inline-size: 100%;
+  max-block-size: 68vh;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
+}
+
+.lightbox__caption {
+  color: var(--color-ivory-200);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.lightbox__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lightbox__count {
+  color: color-mix(in oklab, var(--color-ivory-200) 60%, transparent);
+}
+
+.lightbox__nav,
+.lightbox__close {
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--color-ivory-200) 12%, transparent);
+  color: var(--color-ivory-200);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out-soft);
+}
+.lightbox__nav:hover,
+.lightbox__close:hover {
+  background: color-mix(in oklab, var(--color-ivory-200) 22%, transparent);
+}
+.lightbox__nav[hidden] {
+  visibility: hidden;
+}
+
+.lightbox__close {
+  position: absolute;
+  inset-block-start: var(--space-gutter);
+  inset-inline-end: var(--space-gutter);
+}
+
 /* --- Pull quote / metric strip ------------------------------------------- */
 .metrics {
   display: grid;

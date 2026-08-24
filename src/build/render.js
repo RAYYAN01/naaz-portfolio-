@@ -307,11 +307,16 @@ export function renderProjectFilters() {
  * ready to send visitors to a live client site that's mid-work, so the "Visit"
  * link is withheld (the summary text stays fully visible either way; nothing
  * here is gated behind a click) and a stamp sits over the cover instead.
+ *
+ * `gallery` lists extra screenshots (filenames under public/img/work/) shown
+ * in a lightbox when the card's media is clicked — see gallery.js. Optional;
+ * most projects have just the one cover image and no click behaviour at all.
  */
 export function renderProjects() {
   return projects
     .map((project, i) => {
       const ongoing = project.status === 'ongoing';
+      const gallery = project.gallery ?? [];
 
       // Client name is a visible placeholder until permission to publish it is
       // given — never a plausible-sounding invention.
@@ -340,10 +345,24 @@ export function renderProjects() {
         ? '<span class="project__status"><span>Ongoing</span></span>'
         : '';
 
+      const galleryCue = gallery.length
+        ? `<span class="project__gallery-cue" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M5.5 14.5h9v-9"/></svg>
+            ${gallery.length + 1} photos
+          </span>`
+        : '';
+
+      const mediaAttrs = gallery.length
+        ? ` data-module="gallery" data-gallery='${escape(
+            JSON.stringify([`/img/work/${project.slug}.jpg`, ...gallery.map((g) => `/img/work/${g}`)]),
+          )}' data-gallery-title="${escape(project.title)}" role="button" tabindex="0" aria-label="View ${gallery.length + 1} screenshots of ${escape(project.title)}"`
+        : '';
+
       return `<article class="project" data-tags="${escape(project.tags.join(' '))}" data-reveal="up" data-reveal-item>
-        <div class="project__media" data-tilt="5">
+        <div class="project__media" data-tilt="5"${mediaAttrs}>
           ${media}
           ${statusStamp}
+          ${galleryCue}
         </div>
         <div class="project__body">
           <div class="project__row">
