@@ -30,18 +30,16 @@
   inline-size: clamp(3rem, 6vw, 4.5rem);
   block-size: clamp(3rem, 6vw, 4.5rem);
   margin-inline: auto;
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  transform: scale(0.85);
+  animation: loader-mark-in 0.9s var(--ease-out-expo) forwards;
 }
 
-.loader__mark path,
-.loader__mark line {
-  stroke-dasharray: 240;
-  stroke-dashoffset: 240;
-  animation: loader-draw 1.4s var(--ease-out-expo) forwards;
-}
-
-@keyframes loader-draw {
+@keyframes loader-mark-in {
   to {
-    stroke-dashoffset: 0;
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
