@@ -27,4 +27,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://naazailabs.com/sitemap.xml
+Sitemap: https://www.naazailabs.com/sitemap.xml

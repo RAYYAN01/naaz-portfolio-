@@ -19,7 +19,7 @@ export const company = {
   location: 'JP Nagar, Bengaluru',
   region: 'Karnataka, India',
   hours: 'Mon–Sat · 10am–7pm IST',
-  site: 'naazailabs.com',
+  site: 'www.naazailabs.com',
   product: 'lynq.naazailabs.com',
   linkedin: 'https://www.linkedin.com/company/naaz-ai-labs',
   instagram: 'https://www.instagram.com/naazailabs',
