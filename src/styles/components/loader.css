@@ -1,0 +1,118 @@
+/* ============================================================================
+   LOADING SCREEN — a counter, a rule, and a curtain lift
+   Deliberately short (never gates content for its own sake) and skipped for
+   repeat visits within the session.
+   ========================================================================== */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: var(--space-gutter);
+  background: var(--color-navy-950);
+  color: var(--color-ivory-200);
+}
+
+.loader[hidden] {
+  display: none;
+}
+
+.loader__center {
+  display: grid;
+  place-content: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.loader__mark {
+  inline-size: clamp(3rem, 6vw, 4.5rem);
+  block-size: clamp(3rem, 6vw, 4.5rem);
+  margin-inline: auto;
+}
+
+.loader__mark path,
+.loader__mark line {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: loader-draw 1.4s var(--ease-out-expo) forwards;
+}
+
+@keyframes loader-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.loader__word {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-ivory-200) 55%, transparent);
+}
+
+.loader__foot {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.loader__count {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tighter);
+}
+
+.loader__bar {
+  flex: 1;
+  block-size: 1px;
+  margin-block-end: 0.75rem;
+  background: color-mix(in oklab, var(--color-ivory-200) 18%, transparent);
+  transform-origin: left;
+}
+.loader__bar span {
+  display: block;
+  block-size: 100%;
+  background: var(--color-steel-400);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+  transition: transform 240ms linear;
+}
+
+/* The lift: curtain splits upward, revealing the page already composed. */
+.loader.is-done {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--dur-cinematic) var(--ease-out-expo);
+}
+
+/* Page content is held at a slight offset until the curtain clears. */
+.page-enter {
+  opacity: 0;
+}
+.page-enter.is-ready {
+  opacity: 1;
+  transition: opacity var(--dur-slow) var(--ease-out-soft);
+}
+
+/* ============================================================================
+   PAGE TRANSITION — outgoing wipe on internal navigation
+   ========================================================================== */
+
+.page-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-loader) - 1);
+  background: var(--color-navy-950);
+  clip-path: inset(100% 0 0 0);
+  pointer-events: none;
+}
+
+.page-wipe.is-active {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--dur-slow) var(--ease-out-expo);
+}

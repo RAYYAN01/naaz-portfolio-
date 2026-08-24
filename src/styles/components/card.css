@@ -1,0 +1,693 @@
+/* ============================================================================
+   SURFACES — borderless containers, separated by tone and micro-shadow
+   The brief bans heavy borders, so hierarchy is carried by surface tone, a
+   1px inset hairline, and a very shallow shadow that deepens on hover.
+   ========================================================================== */
+
+.card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--color-line), var(--shadow-card);
+  transition:
+    transform var(--dur-base) var(--ease-out-soft),
+    box-shadow var(--dur-base) var(--ease-out-soft);
+}
+
+.card--interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 0 0 1px var(--color-line-strong), var(--shadow-lift);
+}
+
+/* Glass — only over imagery or the 3D canvas, never over flat ivory. */
+.card--glass {
+  background: color-mix(in oklab, var(--color-ivory-200) 10%, transparent);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--color-ivory-200) 18%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--color-ivory-200) 22%, transparent),
+    0 24px 64px -24px rgb(0 0 0 / 0.5);
+}
+
+/* ============================================================================
+   STAT — animated counters
+   ========================================================================== */
+
+.stat {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.stat__value {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 1.5rem + 4vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: var(--tracking-tighter);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__suffix {
+  color: var(--color-accent);
+}
+
+.stat__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* ============================================================================
+   INDUSTRY CARD — the client-facing entry point (Solutions page)
+   Collapsed it is a quiet row; expanded it becomes a three-tier panel.
+   ========================================================================== */
+
+.industry {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  overflow: hidden;
+  transition:
+    box-shadow var(--dur-base) var(--ease-out-soft),
+    background var(--dur-base) var(--ease-out-soft);
+}
+
+.industry:hover {
+  box-shadow: inset 0 0 0 1px var(--color-line-strong), var(--shadow-card);
+}
+
+.industry.is-open {
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-steel-500) 45%, transparent),
+    var(--shadow-lift);
+}
+
+/* --- Header (the always-visible row) ------------------------------------- */
+.industry__head {
+  position: relative;
+  inline-size: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
+  padding: clamp(1.25rem, 1rem + 1.4vw, 2rem);
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* A whisper of the industry's own photography, not a photo card — desaturated
+   and masked to a thin band on the right so it reads as texture behind the
+   complexity meter, never competing with the name/blurb on the left. */
+.industry__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.14;
+  filter: grayscale(1) contrast(1.1) brightness(0.9);
+  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 78%);
+  mask-image: linear-gradient(to left, black 30%, transparent 78%);
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out-soft);
+}
+.industry:hover .industry__bg {
+  opacity: 0.22;
+}
+
+/* Everything but the photo needs its own stacking context to paint above an
+   absolutely-positioned sibling — without it, non-positioned content still
+   loses to a positioned one regardless of source order. */
+.industry__head > *:not(.industry__bg) {
+  position: relative;
+  z-index: 1;
+}
+
+.industry__icon {
+  display: grid;
+  place-items: center;
+  inline-size: clamp(2.75rem, 2rem + 2vw, 3.5rem);
+  block-size: clamp(2.75rem, 2rem + 2vw, 3.5rem);
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--color-steel-500) 12%, transparent);
+  color: var(--color-accent);
+  flex-shrink: 0;
+  transition:
+    background var(--dur-base) var(--ease-out-soft),
+    color var(--dur-base) var(--ease-out-soft),
+    transform var(--dur-slow) var(--ease-out-expo);
+}
+.industry:hover .industry__icon {
+  transform: rotate(-6deg) scale(1.04);
+}
+.industry.is-open .industry__icon {
+  background: var(--color-navy-800);
+  color: var(--color-ivory-200);
+}
+
+.industry__titles {
+  display: grid;
+  gap: 0.25rem;
+  min-inline-size: 0;
+}
+
+.industry__name {
+  font-size: var(--text-h3);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.15;
+}
+
+.industry__blurb {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.industry__meta {
+  display: none;
+  align-items: center;
+  gap: 1.5rem;
+}
+@media (min-width: 56rem) {
+  .industry__meta {
+    display: flex;
+  }
+}
+
+.industry__chev {
+  display: grid;
+  place-items: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  color: var(--color-ink-muted);
+  flex-shrink: 0;
+  transition: transform var(--dur-base) var(--ease-out-expo),
+    background var(--dur-base) var(--ease-out-soft),
+    color var(--dur-base) var(--ease-out-soft);
+}
+.industry.is-open .industry__chev {
+  transform: rotate(180deg);
+  background: var(--color-steel-500);
+  color: var(--color-ivory-200);
+}
+
+/* --- Panel (height animated by JS via max-block-size on the wrapper) ------ */
+.industry__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-slow) var(--ease-out-expo);
+}
+.industry.is-open .industry__panel {
+  grid-template-rows: 1fr;
+}
+.industry__panel > div {
+  overflow: hidden;
+  min-block-size: 0;
+}
+
+.industry__body {
+  padding: 0 clamp(1.25rem, 1rem + 1.4vw, 2rem) clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+  display: grid;
+  gap: clamp(1.25rem, 1rem + 1vw, 2rem);
+}
+
+/* ============================================================================
+   TIER CARD — Standard / Intermediate / Premium
+   ========================================================================== */
+
+.tiers {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 60rem) {
+  .tiers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  transition:
+    transform var(--dur-base) var(--ease-out-soft),
+    box-shadow var(--dur-base) var(--ease-out-soft);
+}
+
+.tier:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 0 1px var(--color-line-strong), var(--shadow-card);
+}
+
+/* ---------------------------------------------------------------------------
+   TIER ESCALATION
+   Rank 1 sits flat on the page. Rank 2 lifts off it and gains an accent spine.
+   Rank 3 inverts entirely. The progression is deliberate: a buyer should read
+   the hierarchy from the surfaces alone, before any feature text.
+   ------------------------------------------------------------------------ */
+
+.tier__head {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.tier__rank {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.tier__pips {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.tier__pip {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--color-ink) 16%, transparent);
+  transition: background var(--dur-base) var(--ease-out-soft);
+}
+.tier__pip.is-on {
+  background: var(--color-accent);
+}
+
+.tier__count {
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+}
+.tier__count strong {
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  font-weight: 400;
+  color: var(--color-ink);
+  margin-inline: 0.15rem;
+}
+
+/* Investment band — the spend this tier represents. The tier is evidence of
+   what that money bought, so the figure leads and the scope follows. */
+.tier__spend {
+  padding-block: 0.875rem;
+  border-block: 1px solid var(--color-line);
+}
+.tier--premium .tier__spend {
+  border-color: color-mix(in oklab, var(--color-ivory-200) 16%, transparent);
+}
+
+.tier__spend-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  margin-block-end: 0.3rem;
+}
+.tier--premium .tier__spend-label {
+  color: color-mix(in oklab, var(--color-ivory-200) 52%, transparent);
+}
+
+.tier__spend-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2rem);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Delivery facts pinned to the base of the card, so all three align. */
+.tier__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: auto 0 0;
+  padding-block-start: 0.875rem;
+  border-block-start: 1px solid var(--color-line);
+}
+.tier--premium .tier__facts {
+  border-color: color-mix(in oklab, var(--color-ivory-200) 16%, transparent);
+}
+.tier__facts dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  margin-block-end: 0.2rem;
+}
+.tier--premium .tier__facts dt {
+  color: color-mix(in oklab, var(--color-ivory-200) 52%, transparent);
+}
+.tier__facts dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+/* Rank 1 — quiet. Deliberately the least designed thing on the row. */
+.tier--std {
+  background: transparent;
+}
+
+/* Rank 2 — lifts, and gains a steel spine down the leading edge. */
+.tier--int {
+  background: var(--color-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--color-line), var(--shadow-micro);
+}
+.tier--int::before {
+  content: '';
+  position: absolute;
+  inset-block: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  inset-inline-start: 0;
+  inline-size: 2px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(to bottom, var(--color-steel-500), transparent);
+}
+.tier--int:hover {
+  box-shadow: inset 0 0 0 1px var(--color-line-strong), var(--shadow-card);
+}
+
+/* Registration marks — drafting-table language. Signals the tier that gets
+   engineered rather than assembled. */
+.mark-corner {
+  position: absolute;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.mark-corner::before,
+.mark-corner::after {
+  content: '';
+  position: absolute;
+  background: var(--color-steel-300);
+}
+.mark-corner::before {
+  inline-size: 100%;
+  block-size: 1px;
+}
+.mark-corner::after {
+  inline-size: 1px;
+  block-size: 100%;
+}
+.mark-corner--tl {
+  inset-block-start: 0.6rem;
+  inset-inline-start: 0.6rem;
+}
+.mark-corner--br {
+  inset-block-end: 0.6rem;
+  inset-inline-end: 0.6rem;
+}
+.mark-corner--br::before {
+  inset-block-end: 0;
+}
+.mark-corner--br::after {
+  inset-inline-end: 0;
+}
+
+/* Rank 3 — the ceiling. Inverts, and is the only card that glows. */
+.tier--premium {
+  background: var(--color-navy-800);
+  color: var(--color-ivory-200);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-steel-400) 30%, transparent);
+}
+.tier--premium .tier__label,
+.tier--premium .tier__feature {
+  color: color-mix(in oklab, var(--color-ivory-200) 74%, transparent);
+}
+.tier--premium .tier__check {
+  color: var(--color-steel-300);
+}
+.tier--premium:hover {
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-steel-400) 55%, transparent),
+    var(--shadow-glow);
+}
+
+.tier--premium .tier__pip {
+  background: color-mix(in oklab, var(--color-ivory-200) 22%, transparent);
+}
+.tier--premium .tier__pip.is-on {
+  background: var(--color-steel-300);
+}
+.tier--premium .tier__count {
+  color: color-mix(in oklab, var(--color-ivory-200) 52%, transparent);
+}
+.tier--premium .tier__count strong {
+  color: var(--color-ivory-200);
+}
+
+/* The premium name is set in the display face — the only tier that gets it. */
+.tier--prem .tier__name {
+  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.1rem);
+}
+
+/* A faint field behind the ceiling tier, so it reads as lit rather than flat. */
+.tier--prem::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 80% at 78% 0%,
+    color-mix(in oklab, var(--color-steel-500) 26%, transparent),
+    transparent 62%
+  );
+  opacity: 0.7;
+}
+.tier--prem > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tier__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+.tier__name {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+}
+
+.tier__inherits {
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-accent);
+  padding-block-end: 0.75rem;
+  border-block-end: 1px solid var(--color-line);
+}
+
+.tier__list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tier__feature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.625rem;
+  align-items: start;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--color-ink-muted);
+}
+
+.tier__check {
+  color: var(--color-accent);
+  margin-block-start: 0.3em;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   PLAN CARD (Lynq) — extends .tier with a status flag, a price band, and a
+   limits table, reusing the same vocabulary so the Lynq and Solutions pages
+   read as one pricing hierarchy rather than two different systems.
+   ------------------------------------------------------------------------ */
+.plan__flag {
+  position: absolute;
+  inset-block-start: 0.9rem;
+  inset-inline-end: 0.9rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-navy-800);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-weight: 500;
+  z-index: 1;
+}
+.plan__flag--alt {
+  background: color-mix(in oklab, var(--color-ivory-200) 88%, transparent);
+  color: var(--color-navy-800);
+}
+
+.plan__price {
+  padding-block: 0.875rem;
+  border-block: 1px solid var(--color-line);
+}
+.tier--premium .plan__price {
+  border-color: color-mix(in oklab, var(--color-ivory-200) 16%, transparent);
+}
+.plan__amount {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.35rem);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  margin-inline-end: 0.35rem;
+}
+
+.plan__limits {
+  inline-size: 100%;
+  border-collapse: collapse;
+  margin: auto 0 0;
+  padding-block-start: 0.875rem;
+  border-block-start: 1px solid var(--color-line);
+}
+.tier--premium .plan__limits {
+  border-color: color-mix(in oklab, var(--color-ivory-200) 16%, transparent);
+}
+.plan__limits tr + tr th,
+.plan__limits tr + tr td {
+  padding-block-start: 0.45rem;
+}
+.plan__limits th {
+  text-align: start;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--color-ink-faint);
+}
+.tier--premium .plan__limits th {
+  color: color-mix(in oklab, var(--color-ivory-200) 52%, transparent);
+}
+.plan__limits td {
+  text-align: end;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   COMPLEXITY METER — five segments, filled to the project's weight
+   ========================================================================== */
+
+.meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.meter__track {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.meter__seg {
+  inline-size: 1.125rem;
+  block-size: 4px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--color-ink) 14%, transparent);
+  transform-origin: left;
+  transition: background var(--dur-base) var(--ease-out-soft);
+}
+
+.meter__seg.is-on {
+  background: var(--color-steel-500);
+}
+
+.tier--premium .meter__seg {
+  background: color-mix(in oklab, var(--color-ivory-200) 20%, transparent);
+}
+.tier--premium .meter__seg.is-on {
+  background: var(--color-steel-300);
+}
+
+/* ============================================================================
+   PROJECT / CASE-STUDY CARD
+   ========================================================================== */
+
+.project {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: var(--color-surface-sunken);
+  transition: transform var(--dur-slow) var(--ease-out-expo);
+}
+
+.project__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-navy-900);
+}
+
+.project__media img,
+.project__media canvas {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-cinematic) var(--ease-out-expo);
+}
+
+.project:hover .project__media img {
+  transform: scale(1.045);
+}
+
+.project__body {
+  display: grid;
+  gap: 0.5rem;
+  /* The image bleeds full-width by design (.project__media has no padding),
+     but the card itself is a rounded, overflow:hidden box — text sitting
+     flush against that same edge with zero side/bottom padding reads as
+     unfinished, not intentional. Matches the fluid padding .tier already
+     uses for its own card body. */
+  padding: 1.25rem clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.25rem, 1rem + 1vw, 1.75rem);
+}
+
+.project__title {
+  font-size: var(--text-h4);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+}
+
+.project__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" class="no-js" data-ui="skeuo">
+  <head>
+    <!--@include:head-->
+    <title>Contact — Naaz AI Labs</title>
+    <meta
+      name="description"
+      content="Start a project with Naaz AI Labs. Tell us your industry and what is not working, and we will come back with a scope within one business day."
+    />
+    <meta property="og:title" content="Contact — Naaz AI Labs" />
+    <meta property="og:description" content="Let's build your next success story." />
+    <link rel="canonical" href="https://naazailabs.com/contact.html" />
+    <script type="module" src="/src/js/main.js"></script>
+  </head>
+
+  <body>
+    <!--@include:nav-->
+
+    <div class="page-enter is-ready" data-page>
+      <main id="main">
+        <header class="page-head">
+          <div class="shell grid12">
+            <div class="col-full md:col-8">
+              <p class="page-head__index">Contact · 07</p>
+              <h1 class="page-head__title" style="margin-block-start:1.5rem" data-module="splitText">
+                Let's build your next success story.
+              </h1>
+            </div>
+            <p class="col-full md:col-4 md:start-9 lede" style="align-self:end" data-reveal="up">
+              Tell us the industry and what is currently not working. You will get a
+              real scope — tier, timeline, and team — within one business day.
+            </p>
+          </div>
+        </header>
+
+        <section class="section section--tight">
+          <div class="shell contact-grid">
+            <!-- ============================================================
+                 FORM
+                 Posts to /api/contact (see api/contact.js), a Vercel function
+                 that sends the enquiry over SMTP. The action/method here are
+                 real, not a JS-only illusion: with JavaScript off this is a
+                 native POST and still works, redirected back with ?sent=1 or
+                 ?error=1. data-module="contactForm" upgrades that same
+                 submission to stay on the page when JS is available.
+                 ========================================================= -->
+            <div data-reveal="up">
+              <form
+                class="contact-form"
+                action="/api/contact"
+                method="post"
+                data-contact-form
+                data-module="contactForm"
+              >
+                <!-- Honeypot: real visitors never see or fill this in; a bot
+                     filling every field on the page does. Off-screen rather
+                     than display:none, which some bots detect and skip. -->
+                <div class="field-honeypot" aria-hidden="true">
+                  <label for="website">Leave this field empty</label>
+                  <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div class="grid12" style="row-gap:0">
+                  <div class="col-full md:col-6 field">
+                    <label for="name">Your name</label>
+                    <input id="name" name="name" type="text" autocomplete="name" required />
+                  </div>
+
+                  <div class="col-full md:col-6 field">
+                    <label for="company">Company</label>
+                    <input id="company" name="company" type="text" autocomplete="organization" />
+                  </div>
+
+                  <div class="col-full md:col-6 field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required />
+                  </div>
+
+                  <div class="col-full md:col-6 field">
+                    <label for="phone">Phone</label>
+                    <input id="phone" name="phone" type="tel" autocomplete="tel" />
+                  </div>
+
+                  <div class="col-full md:col-6 field">
+                    <label for="industry">Industry</label>
+                    <select id="industry" name="industry" data-industry-select>
+                      <option value="">Select one</option>
+                      <option value="real-estate">Real Estate</option>
+                      <option value="resort">Resort</option>
+                      <option value="travel">Travel Agency</option>
+                      <option value="crm">CRM Systems</option>
+                      <option value="hospitality">Hospitality</option>
+                      <option value="finance">Finance</option>
+                      <option value="events">Event Management</option>
+                      <option value="education">Education</option>
+                      <option value="other">Something else</option>
+                    </select>
+                  </div>
+
+                  <div class="col-full md:col-6 field">
+                    <label for="tier">Tier of interest</label>
+                    <select id="tier" name="tier">
+                      <option value="">Not sure yet</option>
+                      <option value="standard">Standard</option>
+                      <option value="intermediate">Intermediate</option>
+                      <option value="premium">Premium</option>
+                    </select>
+                  </div>
+
+                  <div class="col-full field">
+                    <label for="message">What isn't working right now?</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      placeholder="The more specific, the more useful our first reply will be."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <button class="btn btn--lg" type="submit">
+                  Send enquiry
+                  <span class="btn__arrow" aria-hidden="true">→</span>
+                </button>
+
+                <p class="mono-meta" style="margin-block-start:1rem">
+                  Or email us directly —
+                  <a class="link link--accent" href="mailto:mohammedrayan@naazailabs.com">mohammedrayan@naazailabs.com</a>
+                </p>
+              </form>
+            </div>
+
+            <!-- ============================================================
+                 DETAILS
+                 ========================================================= -->
+            <aside data-reveal="up">
+              <div class="contact-card">
+                <div>
+                  <p class="eyebrow eyebrow--bare" style="color:var(--color-steel-300)">Direct</p>
+                  <h2 class="title-3" style="margin-block-start:.75rem">Naaz AI Labs</h2>
+                </div>
+
+                <div>
+                  <!--@render:contactRows-->
+                </div>
+
+                <a class="btn btn--invert" href="https://wa.me/919731985934" rel="noopener">
+                  Message on WhatsApp
+                  <span class="btn__arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+
+              <div class="card" style="margin-block-start:1rem;padding:clamp(1.5rem, 1rem + 2vw, 2rem)">
+                <p class="eyebrow" style="margin-block-end:1rem">What happens next</p>
+                <ol class="tier__list">
+                  <li class="tier__feature"><span class="mono-meta">01</span><span>We read it properly — a person, not an autoresponder.</span></li>
+                  <li class="tier__feature"><span class="mono-meta">02</span><span>You get a written first take: likely tier, rough timeline, open questions.</span></li>
+                  <li class="tier__feature"><span class="mono-meta">03</span><span>If it looks like a fit, a scoping call. If it isn't, we say so.</span></li>
+                  <li class="tier__feature"><span class="mono-meta">04</span><span>On approval, 50% advance starts the build — live in as little as 7 days.</span></li>
+                </ol>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <!--@include:footer-->
+    </div>
+  </body>
+</html>

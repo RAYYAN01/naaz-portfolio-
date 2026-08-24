@@ -1,0 +1,91 @@
+/* ============================================================================
+   AMBIENT MOTION
+   Slow, low-amplitude drift on the atmospheric glows. Long enough that it is
+   never caught "animating" — it just stops the dark plates feeling printed.
+
+   Amplitude is deliberately small. These sit behind body copy, so anything
+   faster or wider would pull attention off the text it is supposed to support.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .glow {
+    animation: glow-breathe 14s var(--ease-in-out-soft) infinite;
+  }
+
+  /* Offset so two glows on one page never pulse in unison. */
+  .section:nth-of-type(even) .glow,
+  .page-head .glow {
+    animation-duration: 19s;
+    animation-delay: -6s;
+  }
+
+  .scroll-cue__line::after {
+    animation-duration: 2.6s;
+  }
+}
+
+/* ============================================================================
+   SECTION VIDEO
+   Background footage folded into the palette rather than left as-is. The
+   source clip is teal; grayscale strips that, and `screen` blending over a
+   navy plate re-tints the bright nodes to the site's own blue — so a stock
+   asset stops looking like one.
+   ========================================================================== */
+
+.section-video {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-canvas);
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  /* Held low deliberately. At 0.34 the moving nodes competed with the workflow
+     drawn on top of it — two networks on one plate, and the reader lost the
+     one that carried meaning. */
+  opacity: 0.22;
+  pointer-events: none;
+
+  /* No `filter` and no `mix-blend-mode` here, on purpose.
+     Both are per-frame GPU work on a *playing* video, and a blend mode forces
+     the compositor to re-composite the entire stacking context 24 times a
+     second — which is what made the page stutter. The grayscale and the steel
+     tint are baked into the file by ffmpeg instead, so the runtime cost of
+     this element is a plain texture upload. */
+}
+
+/* Scrim: floors the footage so text contrast never depends on which frame is
+   on screen. Without it, legibility changes as the video plays.
+   A real element, not a pseudo — <video> is a replaced element and cannot
+   carry ::after, and the host section already spends ::before/::after on its
+   plate ticks and grain. */
+.section-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    var(--color-navy-900) 8%,
+    color-mix(in oklab, var(--color-navy-900) 72%, transparent) 55%,
+    color-mix(in oklab, var(--color-navy-900) 55%, transparent)
+  );
+}
+
+/* Motion sensitivity: the poster frame still shows, the movement does not. */
+@media (prefers-reduced-motion: reduce) {
+  .section-video {
+    display: none;
+  }
+}
+
+@keyframes glow-breathe {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: var(--glow-opacity, 0.5);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.12);
+    opacity: calc(var(--glow-opacity, 0.5) * 1.35);
+  }
+}

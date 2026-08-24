@@ -1,0 +1,120 @@
+/* ============================================================================
+   MOTION PRIMITIVES
+   Initial states live in CSS so there is never a flash of un-animated content;
+   JS only removes them. Anything JS fails to reach still renders (see the
+   .no-js / fallback rules at the bottom).
+   ========================================================================== */
+
+/* --- Reveal: the site's single entrance gesture -------------------------- */
+[data-reveal] {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    opacity var(--dur-slow) var(--ease-out-soft),
+    transform var(--dur-slow) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal='up'] {
+  transform: translate3d(0, 2.5rem, 0);
+}
+[data-reveal='fade'] {
+  transform: none;
+}
+[data-reveal='scale'] {
+  transform: scale3d(0.96, 0.96, 1);
+}
+[data-reveal='left'] {
+  transform: translate3d(-2rem, 0, 0);
+}
+[data-reveal='right'] {
+  transform: translate3d(2rem, 0, 0);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* --- Line-by-line display reveal ----------------------------------------- */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* The mask's box height comes from the heading's own tight line-height
+     (0.9–0.98 on the display titles), which is shorter than a descender on
+     g/y/p/j/q needs — without this, overflow:hidden clips them clean off.
+     Padding gives the mask room; the equal negative margin cancels it back
+     out so it never adds visible gap below the line. */
+  padding-block-end: 0.22em;
+  margin-block-end: -0.22em;
+}
+.line-mask > span {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  will-change: transform;
+}
+
+/* --- Character/word split (populated by JS) ------------------------------ */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.split-word > span {
+  display: inline-block;
+  transform: translate3d(0, 100%, 0);
+}
+
+/* --- Tilt hosts ------------------------------------------------------------ */
+[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+[data-tilt] > * {
+  transform: translateZ(0);
+}
+
+/* --- Marquee ------------------------------------------------------------- */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  gap: clamp(2rem, 4vw, 4rem);
+  padding-right: clamp(2rem, 4vw, 4rem);
+  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+}
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* --- SVG path drawing ---------------------------------------------------- */
+[data-draw] {
+  stroke-dasharray: var(--draw-length, 1000);
+  stroke-dashoffset: var(--draw-length, 1000);
+}
+[data-draw].is-drawn {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--dur-cinematic) var(--ease-out-expo);
+}
+
+/* --- Fallback: if JS never boots, show everything ------------------------ */
+.no-js [data-reveal],
+.js-failed [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+.no-js .line-mask > span,
+.js-failed .line-mask > span {
+  transform: none;
+}

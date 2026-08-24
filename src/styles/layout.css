@@ -1,0 +1,284 @@
+/* ============================================================================
+   LAYOUT — the strict grid every page is drawn on
+   One 12-column grid, one gutter token, one section rhythm. Pages differ by
+   how they *occupy* the grid, never by inventing a new one.
+   ========================================================================== */
+
+.shell {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter);
+}
+
+.shell--wide {
+  max-width: 110rem;
+}
+
+.shell--text {
+  max-width: var(--container-text);
+}
+
+/* --- The grid ------------------------------------------------------------ */
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--space-gutter);
+  row-gap: clamp(2rem, 1rem + 3vw, 4rem);
+}
+
+/* Column spans. Mobile is single-column by default; spans engage at md.
+   End is a span, not the `-1` line it looks like it should be — a `span`
+   end is what lets the auto-placement algorithm below correctly treat this
+   as a definite-size item once its start goes to `auto` at desktop; an
+   absolute line number paired with an auto start collapses the item to a
+   1-column-wide placement-scan guess instead, which is a real bug this
+   project hit (a contact-form field collapsing to 4px wide). */
+.col-full {
+  grid-column-start: 1;
+  grid-column-end: span 12;
+}
+
+/* Span sets only `grid-column-end`, never the shorthand.
+   `grid-column: span 6` would write start *and* end, so a following
+   `.md\:start-7` would overwrite the start and leave end:auto — collapsing the
+   element to a single column. Setting the end alone lets span and start
+   compose in either order. */
+@media (min-width: 48rem) {
+  /* .col-full's own shorthand pins grid-column-start:1 (see the rule above).
+     A lone item that's fine for — it's exactly where "full width" should
+     start — but for a row of several col-full md:col-N siblings with no
+     explicit md:start-N (relying on natural left-to-right flow), every one
+     of them inherits that same start:1 and piles into the first N columns
+     instead of flowing across the row. Reset it back to auto here so plain
+     flow works; an explicit .md\:start-N below still wins over this since it
+     comes later at equal specificity. */
+  .col-full {
+    grid-column-start: auto;
+  }
+
+  .md\:col-3 { grid-column-end: span 3; }
+  .md\:col-4 { grid-column-end: span 4; }
+  .md\:col-5 { grid-column-end: span 5; }
+  .md\:col-6 { grid-column-end: span 6; }
+  .md\:col-7 { grid-column-end: span 7; }
+  .md\:col-8 { grid-column-end: span 8; }
+  .md\:col-9 { grid-column-end: span 9; }
+  .md\:col-10 { grid-column-end: span 10; }
+  /* Complete 2–11 set. An undefined start silently auto-places the element,
+     which looks like a design choice rather than a missing rule — so the whole
+     range exists even where it is not currently used. */
+  .md\:start-2 { grid-column-start: 2; }
+  .md\:start-3 { grid-column-start: 3; }
+  .md\:start-4 { grid-column-start: 4; }
+  .md\:start-5 { grid-column-start: 5; }
+  .md\:start-6 { grid-column-start: 6; }
+  .md\:start-7 { grid-column-start: 7; }
+  .md\:start-8 { grid-column-start: 8; }
+  .md\:start-9 { grid-column-start: 9; }
+  .md\:start-10 { grid-column-start: 10; }
+  .md\:start-11 { grid-column-start: 11; }
+}
+
+/* --- Section rhythm ------------------------------------------------------ */
+.section {
+  position: relative;
+  /* x-only: a .glow bleeding past a section's own edge is the intended
+     atmosphere (see .glow in this file) — .page-head and .footer already clip
+     it with a full overflow:hidden, but a plain .section never did, so on a
+     narrow viewport its negative-inset glow could push real horizontal
+     scroll. Clipping only the inline axis stops that without touching the
+     vertical bleed the design actually wants. */
+  overflow-x: clip;
+  padding-block: var(--space-section);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.section--tight {
+  padding-block: clamp(3.5rem, 2rem + 5vw, 6rem);
+}
+
+.section--flush-top {
+  padding-block-start: 0;
+}
+
+/* A navy section carries the dark context with it — no global toggle. */
+.section--dark {
+  background-color: var(--color-surface);
+}
+
+/* Hairline that reads as structure, not decoration. */
+.section--ruled {
+  border-block-start: 1px solid var(--color-line);
+}
+
+/* ============================================================================
+   TYPOGRAPHIC PRIMITIVES
+   ========================================================================== */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* The counter rule that gives eyebrows their editorial anchor. */
+.eyebrow::before {
+  content: '';
+  inline-size: 1.75rem;
+  block-size: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.eyebrow--bare::before {
+  display: none;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 0.98;
+  letter-spacing: var(--tracking-tighter);
+  font-weight: 400;
+}
+
+.title-1 {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1.02;
+  letter-spacing: var(--tracking-tighter);
+}
+
+.title-2 {
+  font-size: var(--text-h2);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: var(--tracking-tight);
+}
+
+.title-3 {
+  font-size: var(--text-h3);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: var(--tracking-tight);
+}
+
+.lede {
+  font-size: var(--text-body-lg);
+  line-height: 1.55;
+  color: var(--color-ink-muted);
+  max-width: 46ch;
+}
+
+.body-muted {
+  color: var(--color-ink-muted);
+}
+
+.mono-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* Plate — the registration-mark label ("Plate 01 — Industries") that opens
+   every full-bleed section. It sits outside .shell so a dark section can
+   still go edge-to-edge, but it has to land on the same left edge as the
+   content below it — so it borrows .shell's own box model (max-width +
+   auto margins + the gutter) rather than inventing a second alignment rule. */
+.plate {
+  display: block;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter);
+  margin-block-end: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* A flush-top section has no padding-block-start of its own to breathe in —
+   that space has to come from the plate itself instead. */
+.section--flush-top .plate {
+  padding-block-start: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+
+/* Creed — vision/mission statements. Set in the display face at a size that
+   sits between .lede and .display: large enough to read as a declaration,
+   restrained enough not to compete with a page title. */
+.creed {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.35rem);
+  line-height: 1.18;
+  letter-spacing: var(--tracking-tight);
+  margin-block-start: 1.25rem;
+  max-inline-size: 26ch;
+  text-wrap: balance;
+}
+
+/* Serif italic accent used sparingly inside display lines. */
+.accent-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+/* ============================================================================
+   ATMOSPHERE — the "futuristic ambient glow", kept to the 5% budget
+   ========================================================================== */
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.5;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in oklab, var(--color-steel-500) 60%, transparent),
+    transparent 70%
+  );
+  z-index: var(--z-canvas);
+}
+
+/* Film-grain overlay. Pure CSS/SVG — no image request, no CLS. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+/* Structural grid lines — the "strict grid" made visible on dark sections. */
+.gridlines {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-canvas);
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  opacity: 0.7;
+}
+
+/* Content must always sit above canvas + grain. */
+.layer-content {
+  position: relative;
+  z-index: var(--z-content);
+}

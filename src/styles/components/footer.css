@@ -1,0 +1,97 @@
+/* ============================================================================
+   FOOTER — the closing navy plate
+   Doubles as the site's final CTA so the last thing on every page is an ask.
+   ========================================================================== */
+
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-navy-950);
+  color: var(--color-ivory-200);
+  padding-block: clamp(4rem, 3rem + 6vw, 8rem) 2rem;
+}
+
+.footer__cta {
+  display: grid;
+  gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  padding-block-end: clamp(3rem, 2rem + 4vw, 5rem);
+  border-block-end: 1px solid color-mix(in oklab, var(--color-ivory-200) 12%, transparent);
+}
+
+.footer__headline {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 0.98;
+  letter-spacing: var(--tracking-tighter);
+  max-inline-size: 18ch;
+}
+
+.footer__grid {
+  display: grid;
+  gap: clamp(2rem, 1rem + 3vw, 3rem);
+  padding-block: clamp(2.5rem, 2rem + 2vw, 4rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+  .footer__grid {
+    grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
+  }
+}
+
+.footer__col-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-steel-400);
+  margin-block-end: 1rem;
+}
+
+.footer__list {
+  display: grid;
+  gap: 0.625rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer__link {
+  color: color-mix(in oklab, var(--color-ivory-200) 72%, transparent);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  transition: color var(--dur-fast) var(--ease-out-soft), transform var(--dur-fast) var(--ease-out-soft);
+  display: inline-block;
+}
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--color-ivory-200);
+  transform: translateX(3px);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block-start: 2rem;
+  border-block-start: 1px solid color-mix(in oklab, var(--color-ivory-200) 10%, transparent);
+  font-size: var(--text-sm);
+  color: color-mix(in oklab, var(--color-ivory-200) 55%, transparent);
+}
+
+/* Oversized wordmark bleeding off the bottom edge — the signature sign-off. */
+.footer__wordmark {
+  display: block;
+  inline-size: 100%;
+  margin-block-start: clamp(2rem, 4vw, 4rem);
+  color: color-mix(in oklab, var(--color-ivory-200) 7%, transparent);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 17vw, 17rem);
+  line-height: 0.78;
+  letter-spacing: -0.04em;
+  text-align: center;
+  user-select: none;
+  pointer-events: none;
+}

@@ -1,0 +1,165 @@
+/* ============================================================================
+   SKEUOMORPHIC LAYER
+   ----------------------------------------------------------------------------
+   Everything here is additive and scoped to [data-ui='skeuo'] on <html>.
+   Remove the attribute (or this one @import) and the site returns to the flat
+   system with nothing else to unpick.
+
+   The approach is *material*, not nostalgic: no leather, no linen, no glass
+   bevels. Surfaces behave like physical stock — ivory reads as heavy paper
+   with a letterpressed impression, navy as anodised metal. Depth comes from a
+   consistent light source at the top of the screen, so every highlight sits on
+   an upper edge and every shadow falls below.
+
+   Contrast is never traded for texture: this is the failure mode of soft-UI,
+   where controls dissolve into their background. Text and border contrast
+   ratios are unchanged from the flat theme.
+   ========================================================================== */
+
+[data-ui='skeuo'] {
+  /* One light source, declared once, referenced by every surface below. */
+  --lift-highlight: inset 0 1px 0 rgb(255 255 255 / 0.75);
+  --lift-highlight-dark: inset 0 1px 0 rgb(255 255 255 / 0.14);
+  --lift-shadow: 0 1px 1px rgb(11 31 77 / 0.08), 0 2px 4px rgb(11 31 77 / 0.06),
+    0 8px 16px -6px rgb(11 31 77 / 0.14);
+  --lift-shadow-deep: 0 1px 2px rgb(5 13 32 / 0.4), 0 4px 10px rgb(5 13 32 / 0.34),
+    0 18px 34px -12px rgb(5 13 32 / 0.5);
+  --press-shadow: inset 0 2px 4px rgb(11 31 77 / 0.18), inset 0 1px 1px rgb(11 31 77 / 0.12);
+  --letterpress: 0 1px 0 rgb(255 255 255 / 0.7);
+}
+
+/* ---------------------------------------------------------------------------
+   PAPER — the ivory ground gains a faint tooth and a warm bias.
+   ------------------------------------------------------------------------ */
+[data-ui='skeuo'] .section:not([data-theme='dark']) {
+  background-image:
+    radial-gradient(120% 60% at 50% 0%, rgb(255 255 255 / 0.55), transparent 62%),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.3), transparent 30%);
+}
+
+[data-ui='skeuo'] .section:not([data-theme='dark']) .title-1,
+[data-ui='skeuo'] .section:not([data-theme='dark']) .title-2,
+[data-ui='skeuo'] .section:not([data-theme='dark']) .display,
+[data-ui='skeuo'] .page-head:not(.page-head--dark) .page-head__title {
+  text-shadow: var(--letterpress);
+}
+
+/* ---------------------------------------------------------------------------
+   BUTTONS — raised stock that physically depresses.
+   ------------------------------------------------------------------------ */
+[data-ui='skeuo'] .btn {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.16), rgb(0 0 0 / 0.1));
+  box-shadow: var(--lift-highlight-dark), var(--lift-shadow);
+  text-shadow: 0 1px 1px rgb(5 13 32 / 0.35);
+}
+
+[data-ui='skeuo'] .btn:hover {
+  box-shadow: var(--lift-highlight-dark), var(--lift-shadow-deep);
+}
+
+/* The press reads through the shadow collapsing and the inner edge catching
+   — deliberately without the button itself travelling. Buttons are fixed in
+   place site-wide; nothing about their own box moves on hover or press. */
+[data-ui='skeuo'] .btn:active {
+  box-shadow: var(--press-shadow);
+  background-image: linear-gradient(to bottom, rgb(0 0 0 / 0.12), rgb(255 255 255 / 0.06));
+}
+
+[data-ui='skeuo'] .btn--invert {
+  background-image: linear-gradient(to bottom, #fffdf8, var(--color-ivory-300));
+  box-shadow: var(--lift-highlight), var(--lift-shadow);
+  text-shadow: var(--letterpress);
+}
+
+[data-ui='skeuo'] .btn--ghost {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.5), rgb(11 31 77 / 0.03));
+  box-shadow: var(--lift-highlight), inset 0 0 0 1px var(--color-line-strong),
+    0 1px 2px rgb(11 31 77 / 0.07);
+}
+
+/* ---------------------------------------------------------------------------
+   PANELS — tiers, cards and metrics become physical plates.
+   ------------------------------------------------------------------------ */
+[data-ui='skeuo'] .card,
+[data-ui='skeuo'] .tier--int,
+[data-ui='skeuo'] .contact-card {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.6), transparent 55%);
+  box-shadow: var(--lift-highlight), inset 0 0 0 1px var(--color-line), var(--lift-shadow);
+}
+
+/* Rank 1 stays recessed — it is the base plane the others rise from. */
+[data-ui='skeuo'] .tier--std {
+  background-image: linear-gradient(to bottom, rgb(11 31 77 / 0.035), transparent 40%);
+  box-shadow: inset 0 1px 2px rgb(11 31 77 / 0.07), inset 0 0 0 1px var(--color-line);
+}
+
+/* Rank 3 is anodised navy with a sheen across the top edge. */
+[data-ui='skeuo'] .tier--prem {
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.13), transparent 42%),
+    linear-gradient(to bottom, var(--color-navy-700), var(--color-navy-900));
+  box-shadow: var(--lift-highlight-dark), var(--lift-shadow-deep);
+}
+
+[data-ui='skeuo'] .tier--prem .tier__name,
+[data-ui='skeuo'] .tier--prem .tier__spend-value {
+  text-shadow: 0 1px 2px rgb(5 13 32 / 0.55);
+}
+
+[data-ui='skeuo'] .metric,
+[data-ui='skeuo'] .principle {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.45), transparent 60%);
+  box-shadow: var(--lift-highlight);
+}
+
+/* ---------------------------------------------------------------------------
+   INPUTS — recessed wells, the counterpart to the raised buttons.
+   ------------------------------------------------------------------------ */
+[data-ui='skeuo'] .field input,
+[data-ui='skeuo'] .field select,
+[data-ui='skeuo'] .field textarea {
+  background-image: linear-gradient(to bottom, rgb(11 31 77 / 0.05), transparent 22%);
+  box-shadow: inset 0 2px 3px rgb(11 31 77 / 0.1), inset 0 0 0 1px var(--color-line-strong);
+}
+
+[data-ui='skeuo'] .field input:focus,
+[data-ui='skeuo'] .field select:focus,
+[data-ui='skeuo'] .field textarea:focus {
+  box-shadow: inset 0 2px 3px rgb(11 31 77 / 0.08), inset 0 0 0 1.5px var(--color-steel-500),
+    0 0 0 3px color-mix(in oklab, var(--color-steel-500) 18%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   SMALL PARTS — chips, pips and meters get the same light source.
+   ------------------------------------------------------------------------ */
+[data-ui='skeuo'] .tag {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.55), rgb(11 31 77 / 0.04));
+  box-shadow: var(--lift-highlight), inset 0 0 0 1px var(--color-line),
+    0 1px 1px rgb(11 31 77 / 0.06);
+}
+
+[data-ui='skeuo'] .tier__pip.is-on,
+[data-ui='skeuo'] .meter__seg.is-on {
+  background-image: linear-gradient(to bottom, var(--color-steel-400), var(--color-steel-600));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 1px 1px rgb(11 31 77 / 0.2);
+}
+
+[data-ui='skeuo'] .tier__pip:not(.is-on),
+[data-ui='skeuo'] .meter__seg:not(.is-on) {
+  box-shadow: inset 0 1px 2px rgb(11 31 77 / 0.16);
+}
+
+/* The glass nav gains a physical lip once it condenses. */
+[data-ui='skeuo'] .nav.is-stuck {
+  box-shadow: var(--lift-highlight), 0 1px 0 var(--color-line), 0 4px 12px -4px rgb(11 31 77 / 0.16);
+}
+
+/* Accordion rows lift off the page when open. */
+[data-ui='skeuo'] .industry {
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.5), transparent 50%);
+  box-shadow: var(--lift-highlight), inset 0 0 0 1px var(--color-line);
+}
+[data-ui='skeuo'] .industry.is-open {
+  box-shadow: var(--lift-highlight), inset 0 0 0 1px var(--color-line-strong), var(--lift-shadow);
+}
+

@@ -1,0 +1,133 @@
+/* ============================================================================
+   BASE — reset deltas, typography, focus, selection
+   Tailwind's preflight handles the reset; this file only adds what preflight
+   deliberately leaves to the author.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  /* Lenis drives scrolling; native smooth-scroll would fight it. */
+  scroll-behavior: auto;
+  text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  transition: background-color var(--dur-slow) var(--ease-out-soft);
+}
+
+/* Lenis: the library sets html.lenis; these are its required hooks. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* --- Headings ------------------------------------------------------------ */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* --- Selection: the one place Steel Blue is allowed to fill --------------- */
+::selection {
+  background: color-mix(in oklab, var(--color-steel-500) 30%, transparent);
+  color: var(--color-ink);
+}
+
+/* --- Focus: visible, on-brand, never removed ----------------------------- */
+:focus-visible {
+  outline: 2px solid var(--color-steel-500);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- Skip link ----------------------------------------------------------- */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: var(--z-loader);
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-navy-800);
+  color: var(--color-ivory-200);
+  font-size: var(--text-sm);
+  transform: translateY(-160%);
+  transition: transform var(--dur-fast) var(--ease-out-soft);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* --- Media --------------------------------------------------------------- */
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+img,
+video {
+  height: auto;
+}
+
+/* --- Reduced motion: strip animation, keep the layout intact -------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+/* --- Utility: screen-reader only ----------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

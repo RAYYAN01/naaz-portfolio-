@@ -1,0 +1,321 @@
+/* ============================================================================
+   HERO — the cover. Full-bleed navy, a drawn robot on the right, type on the left.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-block-size: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  background: var(--color-navy-950);
+  color: var(--color-ivory-200);
+  isolation: isolate;
+}
+
+/* ============================================================================
+   ROBOT STAGE
+   Lives INSIDE .hero as an absolutely-positioned child — not fixed to the
+   viewport. It walks the width of the cover, then scrolls away with it like
+   any other part of the section: it belongs to the landing page, not to the
+   whole site.
+
+   `transform` is deliberately NOT transitioned and NOT set here — the rAF loop
+   in hero-robot.js owns it every frame. A CSS transition on the same property
+   would fight the loop and smear.
+   ========================================================================== */
+
+.robot-stage {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  z-index: 2;
+  inline-size: clamp(19rem, 19vw, 27rem);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.robot-stage .robot {
+  inline-size: 100%;
+  block-size: auto;
+  display: block;
+  /* One soft, fairly long shadow — the cue that grounds the figure without it
+     reading as a sticker pasted on the plate. */
+  filter: drop-shadow(0 30px 46px rgb(3 7 15 / 0.55));
+}
+
+/* --- Face expressions ----------------------------------------------------
+   Hover the face: heart eyes. Click it: angry brows. Hold the hover past
+   2s: a jump (handled entirely in JS, alongside the walk/gait loop, so it
+   doesn't fight the per-frame transform hero-robot.js already writes).
+   ========================================================================== */
+.robot__eyes-heart,
+.robot__eyes-angry,
+.robot__brows {
+  opacity: 0;
+  transition: opacity 160ms var(--ease-out-soft);
+}
+
+.robot.is-heart .robot__eyes {
+  opacity: 0;
+}
+.robot.is-heart .robot__eyes-heart {
+  opacity: 1;
+}
+
+.robot.is-angry .robot__eyes {
+  opacity: 0;
+}
+.robot.is-angry .robot__eyes-angry,
+.robot.is-angry .robot__brows {
+  opacity: 1;
+}
+
+.robot__heart {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: robot-heartbeat 640ms ease-in-out infinite;
+}
+.robot__eyes-heart > g:last-child .robot__heart {
+  animation-delay: 70ms;
+}
+@keyframes robot-heartbeat {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1.2); }
+}
+
+/* No room for a companion to walk about on a phone. */
+@media (max-width: 60rem) {
+  .robot-stage {
+    display: none;
+  }
+}
+
+/* Cursor light. A radial gradient whose centre is moved by two custom
+   properties — no per-frame layout, no blend mode, and the browser only has to
+   repaint one composited layer.
+
+   `--gx/--gy` are written by hero-robot.js on an eased value, so the light
+   trails the pointer slightly instead of snapping to it. */
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out-soft);
+  background:
+    radial-gradient(
+      26rem 26rem at var(--gx, 50%) var(--gy, 50%),
+      color-mix(in oklab, var(--color-steel-400) 30%, transparent),
+      color-mix(in oklab, var(--color-steel-500) 12%, transparent) 42%,
+      transparent 68%
+    ),
+    radial-gradient(
+      9rem 9rem at var(--gx, 50%) var(--gy, 50%),
+      color-mix(in oklab, var(--color-ivory-200) 16%, transparent),
+      transparent 70%
+    );
+}
+
+/* Only lit while the pointer is actually over the plate. */
+.hero.is-pointer-in .hero__glow {
+  opacity: 1;
+}
+
+/* Legibility floor. The headline occupies the left half, so the scrim is
+   heaviest there and clears toward the figure on the right. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      var(--color-navy-950) 0%,
+      color-mix(in oklab, var(--color-navy-950) 88%, transparent) 34%,
+      color-mix(in oklab, var(--color-navy-950) 52%, transparent) 62%,
+      color-mix(in oklab, var(--color-navy-950) 62%, transparent) 100%
+    ),
+    linear-gradient(to top, var(--color-navy-950) 2%, transparent 42%);
+}
+
+@media (max-width: 48rem) {
+  /* On a narrow screen the copy spans the full width, so the floor has to be
+     even everywhere rather than graded across it. */
+  .hero__scrim {
+    background: linear-gradient(
+      to top,
+      var(--color-navy-950) 8%,
+      color-mix(in oklab, var(--color-navy-950) 78%, transparent) 55%,
+      color-mix(in oklab, var(--color-navy-950) 70%, transparent)
+    );
+  }
+}
+
+/* Edge vignette only. The heavy lifting moved to .hero__scrim, which is graded
+   horizontally to match where the copy actually sits; stacking the old
+   full-strength radial on top of it crushed the footage to black. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(130% 100% at 50% 40%, transparent 55%, var(--color-navy-950) 100%);
+}
+
+.hero__inner {
+  container-type: inline-size;
+  position: relative;
+  z-index: var(--z-content);
+  display: grid;
+  align-content: center;
+  gap: clamp(1rem, 0.5rem + 1.4vw + 1svh, 2rem);
+  padding-block: clamp(5.5rem, 4rem + 6svh, 8rem) clamp(1.25rem, 2svh, 2rem);
+  /* This box's empty right-hand side overlaps the robot at a higher z-index
+     than its stage — without this, that invisible area would eat the
+     pointer events meant for the robot's face-hit zone. Only its own links
+     need to stay clickable. */
+  pointer-events: none;
+}
+
+.hero__inner a {
+  pointer-events: auto;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  /* Sized off the container's own (capped) width, not the raw viewport — vw
+     alone keeps growing past --container-max on ultra-wide screens, which
+     wraps the headline into three lines instead of the two it's balanced for. */
+  font-size: clamp(2.25rem, 5cqi + 1.8svh, 5.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  margin: 0;
+  /* Safety net: text-wrap:balance picks its own break points to even out line
+     length, and on the narrowest phones that can pick a line the font's own
+     width doesn't quite fit — this guarantees it never runs past the edge. */
+  overflow-wrap: break-word;
+}
+
+.hero__title em {
+  font-style: italic;
+  color: var(--color-steel-300);
+}
+
+.hero__sub {
+  font-size: var(--text-body-lg);
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--color-ivory-200) 70%, transparent);
+  max-inline-size: 38ch;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* --- Capability rail along the bottom of the cover ----------------------- */
+.hero__rail {
+  position: relative;
+  z-index: var(--z-content);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-block: 1.25rem;
+  border-block-start: 1px solid color-mix(in oklab, var(--color-ivory-200) 14%, transparent);
+}
+
+.hero__disciplines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hero__discipline {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+  color: color-mix(in oklab, var(--color-ivory-200) 78%, transparent);
+}
+
+.hero__discipline span {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-steel-400);
+}
+
+/* --- Scroll cue ---------------------------------------------------------- */
+.scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-ivory-200) 50%, transparent);
+}
+
+.scroll-cue__line {
+  position: relative;
+  inline-size: 2.5rem;
+  block-size: 1px;
+  background: color-mix(in oklab, var(--color-ivory-200) 20%, transparent);
+  overflow: hidden;
+}
+.scroll-cue__line::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inline-size: 40%;
+  background: var(--color-steel-400);
+  animation: cue-run 2.2s var(--ease-in-out-soft) infinite;
+}
+@keyframes cue-run {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(260%); }
+}
+
+/* ============================================================================
+   PAGE HEADER — the lighter hero used by interior pages
+   Each interior page gets a different *composition* on the same skeleton.
+   ========================================================================== */
+
+.page-head {
+  position: relative;
+  padding-block: clamp(8rem, 6rem + 8vw, 12rem) clamp(3rem, 2rem + 4vw, 5rem);
+  overflow: hidden;
+}
+
+.page-head--dark {
+  background: var(--color-navy-950);
+  color: var(--color-ivory-200);
+}
+
+.page-head__title {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 0.94;
+  letter-spacing: var(--tracking-tighter);
+  margin: 0;
+}
+
+.page-head__index {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}

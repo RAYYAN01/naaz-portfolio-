@@ -1,0 +1,286 @@
+/* ============================================================================
+   NAVIGATION — glass rail that condenses on scroll
+   Starts transparent over the hero, then acquires a blurred ivory pane once the
+   page moves. Colour context is inherited from whatever section it floats over
+   via a JS-set [data-nav-context].
+   ========================================================================== */
+
+.nav {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1rem, 0.6rem + 1vw, 1.5rem) var(--space-gutter);
+  color: var(--color-ivory-200);
+  transition:
+    background-color var(--dur-base) var(--ease-out-soft),
+    box-shadow var(--dur-base) var(--ease-out-soft),
+    color var(--dur-base) var(--ease-out-soft),
+    padding var(--dur-base) var(--ease-out-soft),
+    transform var(--dur-slow) var(--ease-out-expo);
+}
+
+/* Condensed: glass pane appears. */
+.nav.is-stuck {
+  padding-block: 0.75rem;
+  background: color-mix(in oklab, var(--color-ivory-200) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 1px 0 var(--color-line), var(--shadow-micro);
+}
+
+/* Over a navy section while stuck, the glass inverts. */
+.nav.is-stuck[data-nav-context='dark'] {
+  background: color-mix(in oklab, var(--color-navy-950) 68%, transparent);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--color-ivory-200) 12%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   Ink follows whatever the rail is floating over — stuck or not.
+   This must NOT be tied to .is-stuck: before the page scrolls there is no
+   glass pane, and on any page whose header is ivory (About, Work, Technology,
+   Process, Contact) a hardcoded ivory nav is invisible against it.
+   Declared after the .is-stuck rules so it wins at equal specificity.
+   ------------------------------------------------------------------------ */
+.nav[data-nav-context='light'] {
+  color: var(--color-navy-800);
+}
+
+.nav[data-nav-context='dark'] {
+  color: var(--color-ivory-200);
+}
+
+/* Hide on scroll-down, reveal on scroll-up. */
+.nav.is-hidden {
+  transform: translate3d(0, -110%, 0);
+}
+
+/* --- Wordmark ------------------------------------------------------------ */
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--text-body);
+  letter-spacing: var(--tracking-tight);
+}
+
+.nav__mark {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.nav__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+.nav__brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+/* --- Desktop links ------------------------------------------------------- */
+.nav__links {
+  display: none;
+  align-items: center;
+  gap: clamp(1.25rem, 2vw, 2.25rem);
+}
+
+@media (min-width: 62rem) {
+  .nav__links {
+    display: flex;
+  }
+  .nav__toggle {
+    display: none;
+  }
+}
+
+.nav__link {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 450;
+  opacity: 0.78;
+  transition: opacity var(--dur-fast) var(--ease-out-soft);
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -6px;
+  block-size: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.nav__link:hover,
+.nav__link:focus-visible {
+  opacity: 1;
+}
+.nav__link:hover::after,
+.nav__link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.nav__link[aria-current='page'] {
+  opacity: 1;
+}
+.nav__link[aria-current='page']::after {
+  transform: scaleX(1);
+  background: var(--color-accent);
+}
+
+.nav__cta {
+  padding: 0.625rem 1.25rem;
+  font-size: var(--text-sm);
+}
+
+/* --- Mobile toggle ------------------------------------------------------- */
+.nav__toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.nav__toggle span {
+  display: block;
+  block-size: 1.5px;
+  inline-size: 1.375rem;
+  margin-inline-start: auto;
+  background: currentColor;
+  transition: transform var(--dur-base) var(--ease-out-expo), opacity var(--dur-fast) linear;
+}
+.nav__toggle span:last-child {
+  inline-size: 0.875rem;
+}
+.nav__toggle[aria-expanded='true'] span:first-child {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.nav__toggle[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+}
+.nav__toggle[aria-expanded='true'] span:last-child {
+  inline-size: 1.375rem;
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* --- Mobile drawer ------------------------------------------------------- */
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-nav) - 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem var(--space-gutter) 3rem;
+  background: var(--color-navy-950);
+  color: var(--color-ivory-200);
+  clip-path: inset(0 0 100% 0);
+  visibility: hidden;
+  transition:
+    clip-path var(--dur-slow) var(--ease-out-expo),
+    visibility 0s linear var(--dur-slow);
+}
+
+.nav-drawer.is-open {
+  clip-path: inset(0 0 0 0);
+  visibility: visible;
+  transition:
+    clip-path var(--dur-slow) var(--ease-out-expo),
+    visibility 0s linear 0s;
+}
+
+.nav-drawer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-drawer__link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1rem + 6vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-tighter);
+  color: inherit;
+  text-decoration: none;
+  opacity: 0;
+  transform: translate3d(0, 1.5rem, 0);
+  transition:
+    opacity var(--dur-base) var(--ease-out-soft),
+    transform var(--dur-base) var(--ease-out-soft);
+}
+
+.nav-drawer.is-open .nav-drawer__link {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(120ms + var(--i, 0) * 55ms);
+}
+
+.nav-drawer__index {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--color-steel-400);
+}
+
+.nav-drawer__footer {
+  margin-block-start: auto;
+  padding-block-start: 3rem;
+  display: grid;
+  gap: 0.35rem;
+  font-size: var(--text-sm);
+  color: color-mix(in oklab, var(--color-ivory-200) 60%, transparent);
+}
+
+/* Lock scroll behind the drawer. */
+body.is-nav-open {
+  overflow: hidden;
+}
+
+/* --- Scroll progress rail ------------------------------------------------ */
+.nav__progress {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 1px;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  background: linear-gradient(
+    to right,
+    var(--color-steel-500),
+    var(--color-steel-300)
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out-soft);
+}
+.nav.is-stuck .nav__progress {
+  opacity: 1;
+}

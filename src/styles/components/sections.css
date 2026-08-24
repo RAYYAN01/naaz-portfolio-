@@ -1,0 +1,611 @@
+/* ============================================================================
+   SECTION-SPECIFIC COMPOSITIONS
+   Layouts that belong to one moment in the site rather than the shared system.
+   Kept here so the component files stay generic and reusable.
+   ========================================================================== */
+
+/* --- Industry router (home) ---------------------------------------------- */
+.ind-index {
+  display: grid;
+  gap: 1px;
+  /* The tiles themselves are always navy (see .ind-link below) regardless of
+     the section's own theme, so this seam has to hold up against navy either
+     way — an ivory-tinted line would vanish once the section is light. */
+  background: var(--color-navy-700);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 44rem) {
+  .ind-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 72rem) {
+  .ind-index {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.ind-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'num  icon'
+    'name name'
+    'blurb blurb'
+    'go   go';
+  align-content: start;
+  gap: 0.5rem;
+  padding: clamp(1.25rem, 1rem + 1.4vw, 1.9rem);
+  background: var(--color-navy-950);
+  color: var(--color-ivory-200);
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  transition: background var(--dur-base) var(--ease-out-soft);
+}
+
+/* Steel wash that rises from the bottom edge on hover.
+   z-index 1 puts it above the photo and its navy floor but below the text —
+   pseudo-elements at the same index would otherwise let ::after (the floor)
+   paint over it, hiding the wash entirely. */
+.ind-link::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--color-steel-500) 26%, transparent),
+    transparent 62%
+  );
+  transform: translateY(101%);
+  transition: transform var(--dur-slow) var(--ease-out-expo);
+}
+.ind-link:hover::before,
+.ind-link:focus-visible::before {
+  transform: translateY(0);
+}
+
+/* Everything except the photograph sits above the wash. The :not() matters —
+   `position: relative` on the image would drop it out of its absolute
+   positioning and break the card. */
+.ind-link > *:not(.ind-link__img) {
+  position: relative;
+  z-index: 1;
+}
+
+/* The photograph. Held far back so it reads as atmosphere, not decoration,
+   and desaturated so eight different photos still look like one system.
+   Fixed 3:2 with explicit width/height — no layout shift on load. */
+.ind-link__img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  opacity: 0.16;
+  filter: grayscale(1) contrast(1.15) brightness(0.9);
+  transform: scale(1.02);
+  /* Only compositor-friendly properties are transitioned. Animating `filter`
+     across eight images made every hover a GPU re-filter pass. */
+  transition:
+    opacity var(--dur-slow) var(--ease-out-soft),
+    transform var(--dur-cinematic) var(--ease-out-expo);
+}
+
+.ind-link:hover .ind-link__img,
+.ind-link:focus-visible .ind-link__img {
+  opacity: 0.42;
+  filter: grayscale(0.25) contrast(1.05) brightness(1);
+  transform: scale(1.07);
+}
+
+/* Navy floor under the photo so body text keeps its contrast ratio even at
+   the brightest hover state. */
+.ind-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    to top,
+    var(--color-navy-950) 6%,
+    color-mix(in oklab, var(--color-navy-950) 72%, transparent) 55%,
+    color-mix(in oklab, var(--color-navy-950) 55%, transparent)
+  );
+  pointer-events: none;
+}
+
+.ind-link__num {
+  grid-area: num;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--color-steel-400);
+}
+
+.ind-link__icon {
+  grid-area: icon;
+  justify-self: end;
+  color: color-mix(in oklab, var(--color-ivory-200) 42%, transparent);
+  transition: color var(--dur-base) var(--ease-out-soft), transform var(--dur-slow) var(--ease-out-expo);
+}
+.ind-link:hover .ind-link__icon {
+  color: var(--color-ivory-200);
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.ind-link__name {
+  grid-area: name;
+  font-size: var(--text-h3);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  margin-block-start: clamp(2rem, 4vw, 3.5rem);
+}
+
+.ind-link__blurb {
+  grid-area: blurb;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--color-ivory-200) 58%, transparent);
+}
+
+.ind-link__go {
+  grid-area: go;
+  margin-block-start: 0.75rem;
+  color: var(--color-steel-300);
+  transform: translateX(-4px);
+  opacity: 0;
+  transition: transform var(--dur-base) var(--ease-out-expo), opacity var(--dur-base) var(--ease-out-soft);
+}
+.ind-link:hover .ind-link__go,
+.ind-link:focus-visible .ind-link__go {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* --- Capability list (home) ---------------------------------------------- */
+.capability {
+  margin: 0;
+}
+
+.capability__row {
+  display: grid;
+  gap: 0.625rem;
+  padding-block: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  border-block-start: 1px solid var(--color-line);
+}
+.capability__row:last-child {
+  border-block-end: 1px solid var(--color-line);
+}
+
+.capability__row dt {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.capability__row dd {
+  margin: 0;
+  margin-inline-start: 2.5rem;
+  font-size: var(--text-body);
+  color: var(--color-ink-muted);
+  max-inline-size: 46ch;
+}
+
+/* --- Industry panel internals (Solutions) -------------------------------- */
+.industries {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.industry__facts {
+  display: grid;
+  gap: 0.875rem;
+  align-content: start;
+  margin: 0;
+}
+.industry__facts > div {
+  display: grid;
+  gap: 0.15rem;
+}
+.industry__facts dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.industry__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--color-line);
+}
+
+.industry__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Value / principle blocks (About) ------------------------------------ */
+.principles {
+  display: grid;
+  gap: 1px;
+  background: var(--color-line);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.principle {
+  background: var(--color-surface);
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.principle__num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.5;
+}
+
+/* --- Timeline (About) ---------------------------------------------------- */
+.timeline {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline__item {
+  display: grid;
+  gap: 0.5rem 2rem;
+  grid-template-columns: 1fr;
+  padding-block: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  border-block-start: 1px solid var(--color-line);
+}
+
+@media (min-width: 48rem) {
+  .timeline__item {
+    grid-template-columns: 8rem 1fr;
+  }
+}
+
+.timeline__year {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--color-accent);
+  padding-block-start: 0.35rem;
+}
+
+.timeline__body h3 {
+  font-size: var(--text-h4);
+  font-weight: 500;
+  margin-block-end: 0.35rem;
+}
+.timeline__body p {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  max-inline-size: 52ch;
+}
+
+/* --- Contact ------------------------------------------------------------- */
+.contact-grid {
+  display: grid;
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 60rem) {
+  .contact-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+  margin-block-end: 1.25rem;
+}
+
+.field label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+.field input,
+.field select,
+.field textarea {
+  inline-size: 100%;
+  padding: 0.875rem 1rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--text-body);
+  transition: box-shadow var(--dur-fast) var(--ease-out-soft);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--color-steel-500);
+}
+
+.field textarea {
+  resize: vertical;
+  min-block-size: 8rem;
+}
+
+/* Honeypot: present in the DOM and tabbable order skipped, but never visible
+   or reachable — a real visitor cannot fill in what they cannot find. */
+.field-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.form-status {
+  margin-block-start: 1rem;
+  font-size: var(--text-sm);
+}
+
+.form-status.is-success {
+  color: var(--color-accent);
+}
+
+.form-status.is-error {
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+.contact-form button[type='submit']:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.contact-card {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  border-radius: var(--radius-lg);
+  background: var(--color-navy-800);
+  color: var(--color-ivory-200);
+}
+
+.contact-card a {
+  color: inherit;
+}
+
+/* --- Wandering spider (Work page CTA) -------------------------------------
+   A small easter egg beside "Request a reference" — see spider.js. Decorative
+   and bonus only, which is why the markup carries aria-hidden + tabindex="-1"
+   rather than becoming a second way to reach the same page. */
+.spider {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-ink-faint);
+  cursor: pointer;
+  line-height: 0;
+  z-index: var(--z-content);
+  will-change: transform;
+  /* transform itself is NOT transitioned here — spider.js drives it every
+     frame with a lerp (the same chase technique the magnetic buttons and
+     hero robot use), and a CSS transition on the same property would fight
+     that loop and smear. Only the one-off flee exit below gets one. */
+  transition: color var(--dur-base) var(--ease-out-soft);
+}
+.spider:hover,
+.spider:focus-visible {
+  color: var(--color-accent);
+}
+.spider:active {
+  color: var(--color-ink);
+}
+
+.spider.is-fleeing {
+  opacity: 0;
+  transition: transform 0.48s var(--ease-in-out-soft), opacity 0.32s ease-in 0.16s;
+}
+
+.spider__legs {
+  transform-origin: 20px 20px;
+  animation: spider-scuttle 0.55s ease-in-out infinite;
+}
+.spider:hover .spider__legs {
+  animation-duration: 0.28s;
+}
+@keyframes spider-scuttle {
+  0%, 100% { transform: rotate(0deg) scaleY(1); }
+  50% { transform: rotate(2deg) scaleY(0.94); }
+}
+
+.contact-row {
+  display: grid;
+  gap: 0.25rem;
+  padding-block: 0.875rem;
+  border-block-start: 1px solid color-mix(in oklab, var(--color-ivory-200) 14%, transparent);
+}
+.contact-row:first-of-type {
+  border-block-start: 0;
+}
+.contact-row span {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-steel-300);
+}/* ============================================================================
+   WORKFLOW — a sequence, not a feature list
+   ----------------------------------------------------------------------------
+   Monochromatic by rule: the whole component is drawn in one navy/ivory family
+   and Steel Blue is the ONLY accent, reserved exclusively for the node the
+   pointer is on. Nothing else competes for attention, so the eye reads the
+   chain top-to-bottom instead of choosing where to look.
+   ========================================================================== */
+
+.workflow {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The spine. Runs behind the nodes and stops at the first and last centre, so
+   it reads as a connection between stations rather than a border. */
+.workflow::before {
+  content: '';
+  position: absolute;
+  inset-block: 1.55rem;
+  inset-inline-start: 1.09375rem;
+  inline-size: 2px;
+  border-radius: 1px;
+  background: color-mix(in oklab, var(--color-ivory-200) 20%, transparent);
+}
+
+.workflow__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.1875rem 1fr;
+  align-items: start;
+  column-gap: 1.25rem;
+  row-gap: 0.25rem;
+  padding-block: clamp(0.9rem, 0.7rem + 0.7vw, 1.35rem);
+}
+
+/* Numbered station. Sits on the spine and masks it, which is what makes the
+   line read as passing through each step rather than behind a floating dot. */
+.workflow__node {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  inline-size: 2.1875rem;
+  block-size: 2.1875rem;
+  border-radius: 50%;
+  background: var(--color-navy-900);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-ivory-200) 26%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklab, var(--color-ivory-200) 62%, transparent);
+  transition:
+    background var(--dur-base) var(--ease-out-soft),
+    box-shadow var(--dur-base) var(--ease-out-soft),
+    color var(--dur-base) var(--ease-out-soft);
+}
+
+/* Phase label — the word a number cannot carry ("Origin", "Today"). Sits
+   above the title so the node stays a pure position marker. */
+.workflow__meta {
+  grid-column: 2;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.workflow__title {
+  grid-column: 2;
+  font-size: var(--text-body-lg);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.3;
+  color: var(--color-ivory-200);
+}
+
+.workflow__detail {
+  grid-column: 2;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: color-mix(in oklab, var(--color-ivory-200) 55%, transparent);
+  max-inline-size: 46ch;
+}
+
+/* THE single accent. Steel appears on exactly one node at a time. */
+.workflow__step:hover .workflow__node,
+.workflow__step:focus-within .workflow__node {
+  background: var(--color-steel-500);
+  box-shadow:
+    inset 0 0 0 1px var(--color-steel-300),
+    0 0 0 5px color-mix(in oklab, var(--color-steel-500) 18%, transparent);
+  color: var(--color-ivory-200);
+}
+
+.workflow__step:hover .workflow__detail {
+  color: color-mix(in oklab, var(--color-ivory-200) 78%, transparent);
+}
+
+/* The handover closes the chain — filled, because the sequence ends here. */
+.workflow__step--final .workflow__node {
+  background: var(--color-ivory-200);
+  box-shadow: inset 0 0 0 1px var(--color-ivory-200);
+  color: var(--color-navy-900);
+}
+
+/* A step that has not happened yet. Dashed ring and muted type — the timeline
+   should not claim a future stage as delivered work. */
+.workflow__step--future .workflow__node {
+  background: transparent;
+  box-shadow: none;
+  border: 1px dashed var(--color-line-strong);
+  color: var(--color-ink-faint);
+}
+.workflow__step--future .workflow__title {
+  color: var(--color-ink-muted);
+}
+
+/* The current stage is the one place the accent rests without a pointer. */
+.workflow__step--current .workflow__node {
+  background: var(--color-steel-500);
+  box-shadow: inset 0 0 0 1px var(--color-steel-300);
+  color: var(--color-ivory-200);
+}
+
+/* On a light section the family inverts; the accent rule is unchanged. */
+.section:not([data-theme='dark']) .workflow::before {
+  background: var(--color-line-strong);
+}
+.section:not([data-theme='dark']) .workflow__node {
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  color: var(--color-ink-muted);
+}
+.section:not([data-theme='dark']) .workflow__title {
+  color: var(--color-ink);
+}
+.section:not([data-theme='dark']) .workflow__detail {
+  color: var(--color-ink-muted);
+}
+
+

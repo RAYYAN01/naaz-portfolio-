@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" class="no-js" data-ui="skeuo">
+  <head>
+    <!--@include:head-->
+    <title>Technology — Naaz AI Labs</title>
+    <meta
+      name="description"
+      content="The stack behind Naaz AI Labs: TypeScript, React, Next.js, Node, Python, Three.js, GSAP, OpenAI, Claude, Gemini, AWS, and Cloudflare."
+    />
+    <meta property="og:title" content="Technology — Naaz AI Labs" />
+    <meta property="og:description" content="Chosen for what it does for the client, not for what it does for our CV." />
+    <link rel="canonical" href="https://naazailabs.com/technology.html" />
+    <script type="module" src="/src/js/main.js"></script>
+  </head>
+
+  <body>
+    <!--@include:nav-->
+
+    <div class="page-enter is-ready" data-page>
+      <main id="main">
+        <!-- ================================================================
+             HEADER — the argument first, the logo wall second.
+             ============================================================= -->
+        <header class="page-head">
+          <div class="shell grid12">
+            <div class="col-full md:col-7">
+              <p class="page-head__index">Technology · 05</p>
+              <h1 class="page-head__title" style="margin-block-start:1.5rem" data-module="splitText">
+                Boring choices, made deliberately.
+              </h1>
+            </div>
+            <p class="col-full md:col-4 md:start-9 lede" style="align-self:end" data-reveal="up">
+              Every tool here is one we would still choose in three years, when
+              someone else is maintaining it. Novelty is a cost your business pays,
+              not a feature we get to enjoy.
+            </p>
+          </div>
+        </header>
+
+        <!-- ================================================================
+             THE GRID
+             ============================================================= -->
+        <section class="section section--tight">
+          <div class="shell">
+            <div class="techgrid" data-module="techgrid" data-reveal="up">
+              <!--@render:technology-->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             SELECTION CRITERIA — why, not what
+             ============================================================= -->
+        <section class="section section--ruled">
+          <div class="shell grid12">
+            <p class="col-full md:col-3 eyebrow" data-reveal="fade">Selection criteria</p>
+
+            <dl class="col-full md:col-8 md:start-5 capability" data-reveal-group>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="mono-meta">01</span><span class="title-3">Can we hire for it?</span></dt>
+                <dd>If your next developer cannot be found in a week, the technology is a liability regardless of how elegant it is.</dd>
+              </div>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="mono-meta">02</span><span class="title-3">Does it fail loudly?</span></dt>
+                <dd>We prefer tools that break at build time over tools that break at 2am in production.</dd>
+              </div>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="mono-meta">03</span><span class="title-3">What does it cost at 100×?</span></dt>
+                <dd>Pricing that is free at launch and ruinous at scale is a decision deferred, not avoided. We model it up front.</dd>
+              </div>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="mono-meta">04</span><span class="title-3">Can we leave?</span></dt>
+                <dd>Every layer has an exit. Your data is portable, your models are swappable, and nothing important is hostage to one vendor.</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             AI LAYER — the differentiator, on navy
+             ============================================================= -->
+        <section class="section grain" data-theme="dark" style="background:var(--color-navy-950)">
+          <div class="glow" style="inline-size:32rem;block-size:32rem;inset-block-end:-14rem;inset-inline-start:-6rem;--glow-opacity:.3"></div>
+
+          <div class="shell layer-content grid12">
+            <div class="col-full md:col-5">
+              <p class="eyebrow" data-reveal="fade">The intelligence layer</p>
+              <h2 class="title-1" style="margin-block-start:1.25rem" data-reveal="up">
+                Model-agnostic,<br />on purpose.
+              </h2>
+              <p class="lede" style="margin-block-start:1.5rem" data-reveal="up">
+                We build against an abstraction, not a vendor. When a better or cheaper
+                model ships — and one always does — your system moves to it without a
+                rewrite.
+              </p>
+            </div>
+
+            <dl class="col-full md:col-6 md:start-7" data-reveal-group>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="title-3">Reasoning &amp; generation</span></dt>
+                <dd>Claude, GPT, and Gemini, selected per task on cost, latency, and quality — not loyalty.</dd>
+              </div>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="title-3">Voice</span></dt>
+                <dd>Realtime speech agents that answer calls, qualify, and book — with a clean handover to a human when it matters.</dd>
+              </div>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="title-3">Retrieval</span></dt>
+                <dd>Answers grounded in your inventory, your documents, and your policies — with citations, so a wrong answer is traceable.</dd>
+              </div>
+              <div class="capability__row" data-reveal="up" data-reveal-item>
+                <dt><span class="title-3">Evaluation</span></dt>
+                <dd>Every AI feature ships with a test set. If we cannot measure it, we do not put it in front of your customers.</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             PERFORMANCE BUDGET — proof we hold ourselves to it
+             ============================================================= -->
+        <section class="section">
+          <div class="shell">
+            <div class="grid12" style="margin-block-end:2.5rem">
+              <p class="col-full md:col-3 eyebrow" data-reveal="fade">Engineering standards</p>
+              <h2 class="col-full md:col-8 md:start-5 title-1" data-reveal="up">
+                The budget every build ships against.
+              </h2>
+            </div>
+
+            <div class="metrics" data-reveal="up">
+              <div class="metric">
+                <p class="stat__value"><span data-module="counter" data-lazy data-suffix="+">95</span></p>
+                <p class="stat__label">Lighthouse, all categories</p>
+              </div>
+              <div class="metric">
+                <p class="stat__value"><span data-module="counter" data-lazy data-decimals="1" data-suffix="s">2.5</span></p>
+                <p class="stat__label">Largest contentful paint</p>
+              </div>
+              <div class="metric">
+                <p class="stat__value"><span data-module="counter" data-lazy data-decimals="2">0.1</span></p>
+                <p class="stat__label">Cumulative layout shift</p>
+              </div>
+              <div class="metric">
+                <p class="stat__value">AA</p>
+                <p class="stat__label">WCAG 2.2 conformance</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!--@include:footer-->
+    </div>
+  </body>
+</html>

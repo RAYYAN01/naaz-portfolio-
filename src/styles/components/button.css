@@ -1,0 +1,160 @@
+/* ============================================================================
+   BUTTONS & LINKS
+   Two buttons only: solid (navy) and ghost. A third variant would dilute the
+   hierarchy. Every hover is a physical gesture, never a colour swap alone.
+   ========================================================================== */
+
+.btn {
+  --btn-bg: var(--color-navy-800);
+  --btn-fg: var(--color-ivory-200);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 0.9375rem 1.75rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  overflow: hidden;
+  /* Fixed in place by design — no translate on hover/active. The wipe below
+     and the shadow are the whole hover gesture; nothing about the button's
+     own box moves. */
+  transition:
+    box-shadow var(--dur-base) var(--ease-out-soft),
+    color var(--dur-base) var(--ease-out-soft);
+}
+
+/* The wipe: a steel-blue disc that scales up from the pointer's side. */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    120deg,
+    var(--color-steel-600),
+    var(--color-steel-500) 55%,
+    var(--color-steel-400)
+  );
+  transform: translate3d(0, 101%, 0);
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: translate3d(0, 0, 0);
+}
+
+.btn:hover {
+  box-shadow: var(--shadow-lift);
+}
+
+/* Arrow glyph that leans forward on hover. */
+.btn__arrow {
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.btn:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+/* --- Ghost --------------------------------------------------------------- */
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-ink);
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+}
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  --btn-fg: var(--color-ivory-200);
+  box-shadow: inset 0 0 0 1px transparent, var(--shadow-lift);
+}
+
+/* --- Inverted (sits on navy) --------------------------------------------- */
+.btn--invert {
+  --btn-bg: var(--color-ivory-200);
+  --btn-fg: var(--color-navy-800);
+}
+.btn--invert:hover,
+.btn--invert:focus-visible {
+  --btn-fg: var(--color-ivory-200);
+}
+
+.btn--lg {
+  padding: 1.125rem 2.25rem;
+  font-size: var(--text-body);
+}
+
+/* ============================================================================
+   TEXT LINK — underline that draws in from the left
+   ========================================================================== */
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-ink);
+  text-decoration: none;
+  padding-block-end: 2px;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.link--accent {
+  color: var(--color-accent);
+}
+
+/* ============================================================================
+   TAG / PILL — used for tech chips and feature counts
+   ========================================================================== */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3125rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--color-ink) 5%, transparent);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  transition:
+    background var(--dur-fast) var(--ease-out-soft),
+    color var(--dur-fast) var(--ease-out-soft);
+}
+
+.tag:hover {
+  background: color-mix(in oklab, var(--color-steel-500) 14%, transparent);
+  color: var(--color-ink);
+}

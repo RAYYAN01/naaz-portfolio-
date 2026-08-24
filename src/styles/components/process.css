@@ -1,0 +1,184 @@
+/* ============================================================================
+   PROCESS TIMELINE — a drawn spine with stations
+   The spine is an SVG path drawn on scroll; stations latch on as it passes.
+   ========================================================================== */
+
+.process {
+  position: relative;
+  display: grid;
+  gap: 0;
+}
+
+.process__spine {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 1.0625rem;
+  inline-size: 1px;
+  background: var(--color-line);
+}
+@media (min-width: 56rem) {
+  .process__spine {
+    inset-inline-start: 50%;
+    transform: translateX(-0.5px);
+  }
+}
+
+.process__spine span {
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  background: linear-gradient(to bottom, var(--color-steel-500), var(--color-steel-300));
+  transform: scaleY(var(--fill, 0));
+  transform-origin: top;
+}
+
+.step {
+  position: relative;
+  padding-block: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  padding-inline-start: 3.5rem;
+}
+
+@media (min-width: 56rem) {
+  .step {
+    inline-size: 50%;
+    padding-inline-start: 0;
+    padding-inline-end: 3.5rem;
+    text-align: right;
+  }
+  .step:nth-child(even) {
+    margin-inline-start: 50%;
+    padding-inline-start: 3.5rem;
+    padding-inline-end: 0;
+    text-align: left;
+  }
+}
+
+.step__dot {
+  position: absolute;
+  inset-block-start: calc(clamp(1.5rem, 1rem + 2vw, 2.75rem) + 0.35rem);
+  inset-inline-start: 0.6875rem;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1.5px var(--color-line-strong);
+  transition: box-shadow var(--dur-base) var(--ease-out-soft), transform var(--dur-base) var(--ease-out-expo);
+}
+
+@media (min-width: 56rem) {
+  .step__dot {
+    inset-inline-start: auto;
+    inset-inline-end: -0.375rem;
+  }
+  .step:nth-child(even) .step__dot {
+    inset-inline-end: auto;
+    inset-inline-start: -0.375rem;
+  }
+}
+
+.step.is-active .step__dot {
+  background: var(--color-steel-500);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-steel-500) 22%, transparent);
+  transform: scale(1.15);
+}
+
+.step__index {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--color-ink-faint);
+  /* Preflight zeroes <p> margins — without this the number and whatever
+     follows (a .step__title, or .step__text directly when there's no title,
+     as in the linear variant) would sit flush against each other. */
+  margin-block-end: 0.35rem;
+}
+
+.step__title {
+  font-size: var(--text-h3);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  margin-block: 0.35rem 0.5rem;
+}
+
+.step__text {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  max-inline-size: 42ch;
+}
+@media (min-width: 56rem) {
+  .step .step__text {
+    margin-inline-start: auto;
+  }
+  .step:nth-child(even) .step__text {
+    margin-inline-start: 0;
+  }
+}
+
+/* ============================================================================
+   TECHNOLOGY GRID
+   ========================================================================== */
+
+.techgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 1px;
+  background: var(--color-line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--color-line);
+}
+
+.tech {
+  position: relative;
+  display: grid;
+  gap: 0.5rem;
+  align-content: center;
+  justify-items: center;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem) 1rem;
+  background: var(--color-surface);
+  text-align: center;
+  transition: background var(--dur-base) var(--ease-out-soft), color var(--dur-base) var(--ease-out-soft);
+}
+
+.tech::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--color-steel-500) 22%, transparent),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out-soft);
+  pointer-events: none;
+}
+
+.tech:hover::after {
+  opacity: 1;
+}
+
+.tech__glyph {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  color: var(--color-ink-faint);
+  transition: color var(--dur-base) var(--ease-out-soft), transform var(--dur-slow) var(--ease-out-expo);
+}
+.tech:hover .tech__glyph {
+  color: var(--color-accent);
+  transform: translateY(-3px);
+}
+
+.tech__name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.tech__cat {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
