@@ -3,6 +3,7 @@ import { technologies } from '../data/technology.js';
 import { processSteps } from '../data/process.js';
 import { projects, projectFilters } from '../data/projects.js';
 import { company, guarantees, lynqPlans } from '../data/company.js';
+import { faqCategories, faqItems } from '../data/faq.js';
 
 /**
  * Build-time renderers.
@@ -395,4 +396,56 @@ export function renderProcess() {
       </li>`,
     )
     .join('\n      ');
+}
+
+/**
+ * FAQ accordion. Native <details>/<summary> rather than the industry
+ * page's JS-driven pattern — this page's entire job is being read directly
+ * by crawlers and AI answer engines, many of which never execute JS, so
+ * every question and answer has to be real, expandable HTML with no
+ * dependency on a module loading.
+ */
+export function renderFaq() {
+  return faqCategories
+    .map(
+      (cat) => `<div class="faq__group" data-reveal="up" data-reveal-item>
+        <p class="eyebrow" data-reveal="fade">${escape(cat.label)}</p>
+        <div class="faq__list">
+          ${cat.items
+            .map(
+              (item) => `<details class="faq__item">
+            <summary class="faq__question">
+              <span>${escape(item.q)}</span>
+              <span class="faq__chev" aria-hidden="true">${CHEVRON}</span>
+            </summary>
+            <div class="faq__answer"><p>${escape(item.a)}</p></div>
+          </details>`,
+            )
+            .join('\n          ')}
+        </div>
+      </div>`,
+    )
+    .join('\n      ');
+}
+
+/**
+ * FAQPage structured data, generated from the exact same array that powers
+ * the visible accordion above. Google's FAQ rich-result eligibility requires
+ * the schema to match what a visitor actually sees, so there is deliberately
+ * no second, hand-maintained copy of these answers to drift out of sync.
+ */
+export function renderFaqSchema() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  };
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
 }

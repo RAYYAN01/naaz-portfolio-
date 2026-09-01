@@ -196,6 +196,63 @@
   max-inline-size: 46ch;
 }
 
+/* --- FAQ (native <details>, no JS dependency — see render.js) ------------ */
+.faq {
+  display: grid;
+  gap: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+}
+.faq__list {
+  margin-block-start: 1.25rem;
+}
+.faq__item {
+  border-block-start: 1px solid var(--color-line);
+}
+.faq__item:last-child {
+  border-block-end: 1px solid var(--color-line);
+}
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: clamp(1.1rem, 1rem + 0.5vw, 1.5rem);
+  font-size: var(--text-h4);
+  font-family: var(--font-display);
+  font-weight: 400;
+  cursor: pointer;
+  list-style: none;
+}
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+.faq__question:hover {
+  color: var(--color-accent);
+}
+.faq__chev {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  transition: transform var(--dur-fast) var(--ease-out-soft), background var(--dur-fast) var(--ease-out-soft), color var(--dur-fast) var(--ease-out-soft);
+}
+.faq__item[open] .faq__chev {
+  transform: rotate(180deg);
+  background: var(--color-steel-500);
+  color: var(--color-ivory-200);
+  box-shadow: none;
+}
+.faq__answer {
+  padding-block-end: clamp(1.25rem, 1rem + 1vw, 2rem);
+  max-inline-size: 62ch;
+}
+.faq__answer p {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+
 /* --- Industry panel internals (Solutions) -------------------------------- */
 .industries {
   display: grid;
