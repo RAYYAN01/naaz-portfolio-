@@ -216,7 +216,7 @@ export const industries = [
     name: 'CRM Systems',
     blurb: 'The system your team actually opens every morning.',
     outcome:
-      'Most CRMs fail because they are built for reporting, not for the person doing the work. We build the one your team uses without being told to.',
+      'Most CRMs fail because they are built for reporting, not for the person doing the work. We build AI CRM systems your team actually uses, without being told to.',
     icon: 'nodes',
     timeline: '6–20 weeks',
     team: '4–9 specialists',
