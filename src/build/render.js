@@ -262,13 +262,9 @@ export function renderLynqPlans() {
     .join('\n      ');
 }
 
-/** Contact details, so a phone number change never has to be hunted for. */
+/** Contact details, so a change never has to be hunted for. */
 export function renderContactRows() {
   return `<div class="contact-row">
-        <span>Phone &amp; WhatsApp</span>
-        <a class="link" href="tel:${company.phoneHref}">${escape(company.phone)}</a>
-      </div>
-      <div class="contact-row">
         <span>Email</span>
         <a class="link" href="mailto:${company.email}">${escape(company.email)}</a>
       </div>

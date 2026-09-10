@@ -2,7 +2,7 @@
 
 > Artificial intelligence research and development studio in Bengaluru, India. Builds bespoke AI systems, CRMs, automation, and web platforms for real estate, resorts, travel agencies, CRM-heavy businesses, hospitality, finance, event management, and education — and Lynq, a productised AI-workforce subscription for WhatsApp, web chat, and phone.
 
-Founded by Mohammed Rayhan (Founder & CEO). Studio located in JP Nagar, Bengaluru, Karnataka, India. Support hours Mon–Sat, 10am–7pm IST. Contact: mohammedrayan@naazailabs.com, +91 97319 85934.
+Founded by Mohammed Rayhan (Founder & CEO). Studio located in JP Nagar, Bengaluru, Karnataka, India. Support hours Mon–Sat, 10am–7pm IST. Contact: mohammedrayan@naazailabs.com.
 
 Every bespoke industry build ships in one of three delivery bands — Standard, Intermediate, Premium — each escalating in scope (Standard: a fast, credible web platform; Intermediate: adds CRM, bookings, and automation; Premium: adds AI voice agents, prediction, and document AI).
 
