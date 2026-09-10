@@ -384,7 +384,7 @@ export function renderProjects() {
           <p class="body-muted" style="font-size:var(--text-sm)">${project.summary ? escape(project.summary) : slot('Description on delivery')}</p>
           <div class="project__row" style="margin-block-start:.75rem">
             ${client}
-            ${project.live && !ongoing ? `<a class="link link--accent" href="${project.live}" rel="noopener">Visit&nbsp;<span aria-hidden="true">→</span></a>` : ''}
+            ${project.live && !ongoing ? `<a class="link link--accent" href="${project.live}" target="_blank" rel="noopener noreferrer">Visit&nbsp;<span aria-hidden="true">→</span></a>` : ''}
           </div>
           <ul class="industry__stack" style="margin-block-start:.75rem">
             ${project.stack.map((t) => `<li class="tag">${escape(t)}</li>`).join('')}
