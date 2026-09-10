@@ -41,7 +41,7 @@ export const team = [
     tagline: 'Runs delivery and the client relationship end to end, project to project.',
   },
   {
-    name: 'Shabiul Hassan Siddiqui',
+    name: 'Shabiul Hassnain Siddiqui',
     role: 'Technical Head',
     initials: 'SH',
     tagline: 'Leads the build team — code review, quality, and getting it shipped.',
