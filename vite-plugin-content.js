@@ -45,14 +45,16 @@ export default function contentPlugin() {
         // 1. Partials.
         output = output.replace(/<!--@include:([\w-]+)-->/g, (_, name) => readPartial(name));
 
-        // 2. Data-driven blocks.
-        output = output.replace(/<!--@render:(\w+)-->/g, (match, name) => {
+        // 2. Data-driven blocks. An optional `:arg` after the name is passed
+        //    straight to the renderer — used by the per-industry landing pages,
+        //    which are one renderer over eight real data rows.
+        output = output.replace(/<!--@render:(\w+)(?::([a-z0-9-]+))?-->/g, (match, name, arg) => {
           const fn = renderers[`render${name[0].toUpperCase()}${name.slice(1)}`];
           if (typeof fn !== 'function') {
             this.warn(`[content] unknown renderer "${name}"`);
             return match;
           }
-          return fn();
+          return arg ? fn(arg) : fn();
         });
 
         // 3. Mark the current page in the nav. Doing this here rather than in

@@ -161,7 +161,7 @@ export function renderIndustries() {
 export function renderIndustryIndex() {
   return industries
     .map(
-      (industry, i) => `<a class="ind-link" href="/solutions.html#${industry.id}" data-reveal="up" data-reveal-item>
+      (industry, i) => `<a class="ind-link" href="/industries/${industry.id}.html" data-reveal="up" data-reveal-item>
         <img class="ind-link__img" src="/img/industries/${industry.id}.jpg" alt="" width="900" height="600" loading="lazy" decoding="async" />
         <span class="ind-link__num">${String(i + 1).padStart(2, '0')}</span>
         <span class="ind-link__icon">${glyph(industry.icon)}</span>
@@ -177,7 +177,7 @@ export function renderIndustryFooterLinks() {
   return industries
     .map(
       (industry) =>
-        `<li><a class="footer__link" href="/solutions.html#${industry.id}">${escape(industry.name)}</a></li>`,
+        `<li><a class="footer__link" href="/industries/${industry.id}.html">${escape(industry.name)}</a></li>`,
     )
     .join('\n            ');
 }
@@ -448,6 +448,14 @@ export function renderFaqSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    '@id': `${SITE}/faq.html#faq`,
+    url: `${SITE}/faq.html`,
+    name: 'Naaz AI Labs — FAQ',
+    isPartOf: { '@id': `${SITE}/#website` },
+    publisher: { '@id': ORG_ID },
+    author: { '@id': ORG_ID },
+    inLanguage: 'en-IN',
+    dateModified: SITE_UPDATED,
     mainEntity: faqItems.map((item) => ({
       '@type': 'Question',
       name: item.q,
@@ -458,4 +466,305 @@ export function renderFaqSchema() {
     })),
   };
   return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+}
+
+/* ==========================================================================
+   PER-INDUSTRY LANDING PAGES  (/industries/<id>.html)
+
+   One renderer over the eight real rows in industries.js. These are not
+   name-swapped doorway pages: each carries a different problem statement,
+   a different three-band scope matrix, a different tech stack, and — where
+   they exist — the real client projects delivered in that vertical. Nothing
+   on these pages is generated copy; every fact traces to industries.js,
+   projects.js, or company.js.
+   ========================================================================== */
+
+const SITE = 'https://www.naazailabs.com';
+const ORG_ID = `${SITE}/#org`;
+// Bumped by hand when page content materially changes — an honest
+// dateModified for AI-citation provenance, not an auto-stamp on every deploy.
+const SITE_UPDATED = '2026-09-10';
+
+// projects.js uses display-name industry labels that don't all match the
+// industries.js `name`. Only the honest overlaps are mapped.
+const INDUSTRY_PROJECT_LABELS = {
+  'real-estate': ['Real Estate'],
+  resort: ['Resort'],
+  travel: ['Travel'],
+  crm: [],
+  hospitality: ['Hospitality'],
+  finance: [],
+  events: ['Event Management'],
+  education: [],
+};
+
+const industryBySlug = (slug) => industries.find((i) => i.id === slug);
+
+/** Real client projects delivered in this vertical, most recent first. */
+function industryProjects(slug) {
+  const labels = INDUSTRY_PROJECT_LABELS[slug] ?? [];
+  if (!labels.length) return [];
+  return projects.filter((p) => labels.includes(p.industry) && p.status !== 'ongoing');
+}
+
+function faqForIndustry(industry) {
+  const noun = industry.name.toLowerCase();
+  return [
+    {
+      q: `Do you work with ${noun} clients outside Bangalore?`,
+      a: `Yes. The studio is in JP Nagar, Bengaluru, and we deliver for ${noun} clients across Karnataka and the rest of India. Client data is stored in India.`,
+    },
+    {
+      q: `How long does a ${noun} build take?`,
+      a: `${industry.timeline} depending on the delivery band — Standard is the fastest, Premium the most involved. A Lynq subscription goes live in 7 days from advance payment.`,
+    },
+    {
+      q: `What does a ${noun} project include?`,
+      a: `${industry.tiers[0].name} covers ${industry.tiers[0].features.slice(0, 3).join(', ').toLowerCase()} and more. ${industry.tiers[industry.tiers.length - 1].name} adds AI voice agents, prediction, and document AI. See the full three-band breakdown on this page.`,
+    },
+  ];
+}
+
+/** Head block: title, description, canonical, og:url — one per industry. */
+export function renderIndustryLandingHead(slug) {
+  const ind = industryBySlug(slug);
+  if (!ind) return '';
+  const url = `${SITE}/industries/${slug}.html`;
+  const title = `${ind.name} AI, CRM &amp; Automation in Bangalore | Naaz AI Labs`;
+  const desc = `${ind.blurb} ${ind.name} websites, CRMs, and AI automation built by Naaz AI Labs in Bangalore — serving Karnataka and across India.`;
+  return `<title>${title}</title>
+    <meta name="description" content="${escape(desc)}" />
+    <meta property="og:title" content="${ind.name} AI, CRM &amp; Automation in Bangalore" />
+    <meta property="og:description" content="${escape(ind.blurb)}" />
+    <link rel="canonical" href="${url}" />
+    <meta property="og:url" content="${url}" />`;
+}
+
+/** Service + BreadcrumbList + FAQPage structured data for one industry. */
+export function renderIndustryLandingSchema(slug) {
+  const ind = industryBySlug(slug);
+  if (!ind) return '';
+  const url = `${SITE}/industries/${slug}.html`;
+  const graph = [
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#webpage`,
+      url,
+      name: `${ind.name} AI, CRM & Automation in Bangalore`,
+      description: ind.blurb,
+      isPartOf: { '@id': `${SITE}/#website` },
+      about: { '@id': `${url}#service` },
+      publisher: { '@id': ORG_ID },
+      author: { '@id': ORG_ID },
+      inLanguage: 'en-IN',
+      datePublished: SITE_UPDATED,
+      dateModified: SITE_UPDATED,
+      primaryImageOfPage: `${SITE}/img/og-image.jpg`,
+    },
+    {
+      '@type': 'Service',
+      '@id': `${url}#service`,
+      name: `${ind.name} — AI, CRM & automation`,
+      description: ind.blurb,
+      serviceType: ind.name,
+      provider: { '@id': ORG_ID },
+      areaServed: [
+        { '@type': 'AdministrativeArea', name: 'Karnataka' },
+        { '@type': 'Country', name: 'India' },
+      ],
+      url,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+        { '@type': 'ListItem', position: 2, name: 'Solutions', item: `${SITE}/solutions.html` },
+        { '@type': 'ListItem', position: 3, name: ind.name, item: url },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      isPartOf: { '@id': `${url}#webpage` },
+      publisher: { '@id': ORG_ID },
+      dateModified: SITE_UPDATED,
+      mainEntity: faqForIndustry(ind).map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ];
+  return `<script type="application/ld+json">\n${JSON.stringify(
+    { '@context': 'https://schema.org', '@graph': graph },
+    null,
+    2,
+  )}\n</script>`;
+}
+
+/** The full page body for one industry landing page. */
+export function renderIndustryLanding(slug) {
+  const ind = industryBySlug(slug);
+  if (!ind) return `<!-- unknown industry: ${escape(slug)} -->`;
+
+  const idx = industries.indexOf(ind);
+  const related = [industries[(idx + 1) % industries.length], industries[(idx + 2) % industries.length]];
+  const work = industryProjects(slug);
+
+  const workBlock = work.length
+    ? `<section class="section section--ruled">
+          <div class="shell">
+            <div class="grid12" style="margin-block-end:2.5rem">
+              <p class="col-full md:col-3 eyebrow" data-reveal="fade">Delivered</p>
+              <h2 class="col-full md:col-8 md:start-5 title-1" data-reveal="up">
+                ${escape(ind.name)} systems, in production.
+              </h2>
+            </div>
+            <ul class="ind-work" data-reveal-group>
+              ${work
+                .map(
+                  (p) => `<li class="ind-work__item" data-reveal="up" data-reveal-item>
+                <span class="ind-work__name">${escape(p.title)}</span>
+                <span class="body-muted" style="font-size:var(--text-sm)">${p.summary ? escape(p.summary) : ''}</span>
+                ${
+                  p.live
+                    ? `<a class="link link--accent" href="${p.live}" target="_blank" rel="noopener noreferrer">Visit&nbsp;<span aria-hidden="true">→</span></a>`
+                    : ''
+                }
+              </li>`,
+                )
+                .join('\n              ')}
+            </ul>
+            <a class="btn btn--ghost" href="/work.html" style="margin-block-start:2rem">
+              See all work
+              <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </section>`
+    : `<section class="section section--ruled">
+          <div class="shell">
+            <p class="lede" data-reveal="up">
+              See systems we have shipped across every vertical in
+              <a class="link link--accent" href="/work.html">selected work</a>.
+            </p>
+          </div>
+        </section>`;
+
+  const faqs = faqForIndustry(ind);
+
+  return `<header class="page-head page-head--dark grain" data-theme="dark">
+      <div class="glow" style="inline-size:38rem;block-size:38rem;inset-block-start:-12rem;inset-inline-end:-8rem;--glow-opacity:.32"></div>
+      <div class="gridlines" aria-hidden="true"></div>
+      <div class="shell layer-content">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/solutions.html">Solutions</a><span aria-hidden="true">/</span><span aria-current="page">${escape(ind.name)}</span>
+        </nav>
+        <div class="grid12" style="margin-block-start:1.5rem">
+          <div class="col-full md:col-7">
+            <p class="page-head__index">Industry · ${escape(ind.name)}</p>
+            <h1 class="page-head__title" style="margin-block-start:1.25rem" data-module="splitText">
+              AI &amp; automation for ${escape(ind.name)}
+            </h1>
+          </div>
+          <div class="col-full md:col-4 md:start-9" style="align-self:end">
+            <p class="lede" data-reveal="up">
+              ${escape(ind.outcome)} Delivered from our Bengaluru studio, for clients across Karnataka and India.
+            </p>
+          </div>
+        </div>
+        <div class="hero__actions" style="margin-block-start:2rem" data-reveal="up">
+          <a class="btn btn--invert btn--lg" href="/contact.html?industry=${ind.id}">
+            Scope a ${escape(ind.name.toLowerCase())} build
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="/solutions.html#${ind.id}">
+            Compare all industries
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section class="section section--tight">
+      <div class="shell">
+        <dl class="metrics" data-reveal="up">
+          <div class="metric">
+            <p class="stat__label">Typical timeline</p>
+            <p class="title-3">${escape(ind.timeline)}</p>
+          </div>
+          <div class="metric">
+            <p class="stat__label">Delivery team</p>
+            <p class="title-3">${escape(ind.team)}</p>
+          </div>
+          <div class="metric">
+            <p class="stat__label">Serving</p>
+            <p class="title-3">Bengaluru · Karnataka · India</p>
+          </div>
+        </dl>
+        <ul class="industry__stack" style="margin-block-start:2rem">
+          ${ind.stack.map((t) => `<li class="tag">${escape(t)}</li>`).join('\n          ')}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--flush-top" aria-label="${escape(ind.name)} delivery bands">
+      <div class="shell">
+        <div class="grid12" style="margin-block-end:2.5rem">
+          <p class="col-full md:col-3 eyebrow" data-reveal="fade">What your investment builds</p>
+          <h2 class="col-full md:col-8 md:start-5 title-1" data-reveal="up">
+            Three delivery bands for ${escape(ind.name.toLowerCase())}.
+          </h2>
+        </div>
+        <div class="tiers">
+          ${ind.tiers.map(renderTier).join('\n          ')}
+        </div>
+      </div>
+    </section>
+
+    ${workBlock}
+
+    <section class="section">
+      <div class="shell">
+        <div class="grid12" style="margin-block-end:2.5rem">
+          <p class="col-full md:col-3 eyebrow" data-reveal="fade">${escape(ind.name)} FAQ</p>
+          <h2 class="col-full md:col-8 md:start-5 title-1" data-reveal="up">Questions, answered.</h2>
+        </div>
+        <div class="faq">
+          <div class="faq__list">
+            ${faqs
+              .map(
+                (f) => `<details class="faq__item">
+              <summary class="faq__question">
+                <span>${escape(f.q)}</span>
+                <span class="faq__chev" aria-hidden="true">${CHEVRON}</span>
+              </summary>
+              <div class="faq__answer"><p>${escape(f.a)}</p></div>
+            </details>`,
+              )
+              .join('\n            ')}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--ruled">
+      <div class="shell grid12" style="align-items:center">
+        <div class="col-full md:col-6">
+          <p class="eyebrow" data-reveal="fade">Related</p>
+          <h2 class="title-1" style="margin-block-start:1.25rem" data-reveal="up">Other industries we build for.</h2>
+          <p class="lede" style="margin-block-start:1.5rem" data-reveal="up">
+            ${related
+              .map((r) => `<a class="link link--accent" href="/industries/${r.id}.html">${escape(r.name)}</a>`)
+              .join(' · ')}
+            · <a class="link link--accent" href="/solutions.html">all eight</a>
+          </p>
+        </div>
+        <div class="col-full md:col-4 md:start-9" data-reveal="up">
+          <a class="btn btn--lg" href="/contact.html?industry=${ind.id}">
+            Start your project
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <p class="mono-meta" style="margin-block-start:1rem">Reply within one business day</p>
+        </div>
+      </div>
+    </section>`;
 }
