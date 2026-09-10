@@ -54,13 +54,27 @@ export function initNav() {
     const probe = document.elementFromPoint(24, navHeight + 4);
     nav.style.pointerEvents = '';
 
-    const onDark = probe?.closest('[data-theme="dark"], .hero, .footer, .page-head--dark');
+    // Nothing under the probe (mid-transition, off-screen) — keep what we have
+    // rather than snapping to light.
+    if (!probe) return;
+
+    // The intro curtain is always navy but carries no data-theme; treat it as
+    // dark so the rail does not flash dark-on-dark before the first scroll.
+    const onDark = probe.closest(
+      '[data-theme="dark"], .hero, .footer, .page-head--dark, [data-loader]',
+    );
     nav.dataset.navContext = onDark ? 'dark' : 'light';
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => { navHeight = nav.offsetHeight; updateContext(); }, { passive: true });
   onScroll();
+
+  // Recompute once the page is fully settled and again when the intro curtain
+  // clears the probe point — neither fires a scroll event on its own.
+  window.addEventListener('load', updateContext);
+  document.querySelector('[data-loader]')?.addEventListener('transitionend', updateContext, { once: true });
+  setTimeout(updateContext, 0);
 
   /* --- Mobile drawer ----------------------------------------------------- */
   if (toggle && drawer) {
