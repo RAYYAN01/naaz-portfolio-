@@ -11,7 +11,7 @@ export const company = {
   name: 'Naaz AI Labs',
   founder: 'Mohammed Rayhan',
   founderRole: 'Founder & CEO',
-  email: 'mohammedrayan@naazailabs.com',
+  email: 'hello@naazailabs.com',
   emailShort: 'ray@naazailabs.com',
   location: 'JP Nagar, Bengaluru',
   region: 'Karnataka, India',
