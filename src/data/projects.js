@@ -274,6 +274,7 @@ export const projects = [
     summary:
       'Cab and coach rental site for a Bangalore operator — one-way, round-trip, airport, and local trips, plus tempo travellers and buses for outstation tours across Karnataka and South India, with an admin portal for bookings.',
     live: 'https://www.sumpreethtoursandtravels.com/',
+    screenshot: true,
   },
   {
     slug: 'manoj-tours-and-travels',
@@ -287,6 +288,7 @@ export const projects = [
     summary:
       'Taxi booking site for a Bangalore cab service — one-way, round-trip, local, and airport transfers across Karnataka, with an admin portal for managing bookings.',
     live: 'https://www.manojtoursandtravels.in/',
+    screenshot: true,
   },
   {
     slug: 'the-property-agent',
@@ -300,6 +302,7 @@ export const projects = [
     summary:
       'Listings site for a Bengaluru real estate agent — plots, farmhouse plots, agricultural land, rentals, and commercial property across Karnataka, with an admin portal for managing listings.',
     live: 'https://thepropertyagent.in/',
+    screenshot: true,
   },
 ];
 
