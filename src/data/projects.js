@@ -262,6 +262,45 @@ export const projects = [
     live: 'https://www.sideventsmanagement.com/',
     screenshot: true,
   },
+  {
+    slug: 'sumpreeth-tours-and-travels',
+    title: 'Sumpreeth Tours & Travels',
+    client: 'Sumpreeth Tours & Travels',
+    // Has a staff admin portal for bookings — recorded by the tag, not linked.
+    tags: ['web', 'crm'],
+    industry: 'Travel',
+    year: '2026',
+    stack: [],
+    summary:
+      'Cab and coach rental site for a Bangalore operator — one-way, round-trip, airport, and local trips, plus tempo travellers and buses for outstation tours across Karnataka and South India, with an admin portal for bookings.',
+    live: 'https://www.sumpreethtoursandtravels.com/',
+  },
+  {
+    slug: 'manoj-tours-and-travels',
+    title: 'Manoj Tours & Travels',
+    client: 'Manoj Tours & Travels',
+    // Has a staff admin portal for bookings — recorded by the tag, not linked.
+    tags: ['web', 'crm'],
+    industry: 'Travel',
+    year: '2026',
+    stack: [],
+    summary:
+      'Taxi booking site for a Bangalore cab service — one-way, round-trip, local, and airport transfers across Karnataka, with an admin portal for managing bookings.',
+    live: 'https://www.manojtoursandtravels.in/',
+  },
+  {
+    slug: 'the-property-agent',
+    title: 'The Property Agent',
+    client: 'The Property Agent',
+    // Has a staff admin portal for listings — recorded by the tag, not linked.
+    tags: ['web', 'crm'],
+    industry: 'Real Estate',
+    year: '2026',
+    stack: [],
+    summary:
+      'Listings site for a Bengaluru real estate agent — plots, farmhouse plots, agricultural land, rentals, and commercial property across Karnataka, with an admin portal for managing listings.',
+    live: 'https://thepropertyagent.in/',
+  },
 ];
 
 export const projectFilters = [
