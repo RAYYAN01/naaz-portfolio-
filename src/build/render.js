@@ -453,7 +453,7 @@ export function renderFaqSchema() {
     name: 'Naaz AI Labs — FAQ',
     isPartOf: { '@id': `${SITE}/#website` },
     publisher: { '@id': ORG_ID },
-    author: { '@id': ORG_ID },
+    author: { '@id': FOUNDER_ID },
     inLanguage: 'en-IN',
     dateModified: SITE_UPDATED,
     mainEntity: faqItems.map((item) => ({
@@ -481,6 +481,7 @@ export function renderFaqSchema() {
 
 const SITE = 'https://www.naazailabs.com';
 const ORG_ID = `${SITE}/#org`;
+const FOUNDER_ID = `${SITE}/#founder`;
 // Bumped by hand when page content materially changes — an honest
 // dateModified for AI-citation provenance, not an auto-stamp on every deploy.
 const SITE_UPDATED = '2026-09-10';
@@ -555,7 +556,7 @@ export function renderIndustryLandingSchema(slug) {
       isPartOf: { '@id': `${SITE}/#website` },
       about: { '@id': `${url}#service` },
       publisher: { '@id': ORG_ID },
-      author: { '@id': ORG_ID },
+      author: { '@id': FOUNDER_ID },
       inLanguage: 'en-IN',
       datePublished: SITE_UPDATED,
       dateModified: SITE_UPDATED,

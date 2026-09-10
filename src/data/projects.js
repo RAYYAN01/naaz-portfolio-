@@ -306,6 +306,19 @@ const projectList = [
     screenshot: true,
   },
   {
+    slug: 'sanju-tours-and-travels',
+    title: 'Sanju Tours & Travels',
+    client: 'Sanju Tours & Travels',
+    tags: ['web'],
+    industry: 'Travel',
+    year: '2026',
+    stack: [],
+    summary:
+      'Rental and tour site for a Hubli-Dharwad operator — cars, Tempo Travellers, and luxury coaches with per-km pricing, verified drivers, airport transfers, and outstation tours across Karnataka.',
+    live: 'https://www.sanjutoursandtravels.in/',
+    screenshot: true,
+  },
+  {
     slug: 'the-property-agent',
     title: 'The Property Agent',
     client: 'The Property Agent',

@@ -34,13 +34,23 @@
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "Person",
+        "@id": "https://www.naazailabs.com/#founder",
+        "name": "Mohammed Rayhan",
+        "jobTitle": "Founder & CEO",
+        "url": "https://www.naazailabs.com/about.html",
+        "worksFor": { "@id": "https://www.naazailabs.com/#org" },
+        "sameAs": ["https://www.linkedin.com/company/naaz-ai-labs"]
+      },
+      {
         "@type": "Organization",
         "@id": "https://www.naazailabs.com/#org",
         "name": "Naaz AI Labs",
         "url": "https://www.naazailabs.com",
         "logo": "https://www.naazailabs.com/img/logo-badge.png",
         "email": "hello@naazailabs.com",
-        "founder": { "@type": "Person", "name": "Mohammed Rayhan", "jobTitle": "Founder & CEO" },
+        "founder": { "@id": "https://www.naazailabs.com/#founder" },
+        "foundingLocation": { "@type": "Place", "name": "Bengaluru, Karnataka, India" },
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "JP Nagar, Bengaluru",
@@ -63,7 +73,8 @@
         "url": "https://www.naazailabs.com",
         "name": "Naaz AI Labs",
         "publisher": { "@id": "https://www.naazailabs.com/#org" },
-        "inLanguage": "en-IN"
+        "inLanguage": "en-IN",
+        "dateModified": "2026-09-10"
       }
     ]
   }

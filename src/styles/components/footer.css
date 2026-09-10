@@ -81,6 +81,11 @@
   color: color-mix(in oklab, var(--color-ivory-200) 55%, transparent);
 }
 
+.footer__legal {
+  display: inline-flex;
+  gap: 1.25rem;
+}
+
 /* "Designed & engineered in-house" → GitHub profile. No horizontal nudge
    here — it sits at the row's right edge, where a slide reads as a glitch. */
 .footer__made {
