@@ -144,6 +144,7 @@ const projectList = [
       'Property consultancy site for a Bengaluru real estate firm — bank-auction, resale, and rental listings, backed by an admin dashboard for managing enquiries.',
     live: 'http://sarakki-homes-x191.vercel.app/',
     status: 'ongoing',
+    screenshot: true,
   },
   {
     slug: 'zafoor-clinic',
@@ -195,8 +196,7 @@ const projectList = [
     stack: [],
     summary:
       'Enquiry site for a Bengaluru industrial security and facilities firm — security, housekeeping, and training services, with quote requests by form, phone, or WhatsApp.',
-    live: 'https://shan-maintenance-services.vercel.app/',
-    status: 'ongoing',
+    live: 'https://www.shanmaintenanceservices.in/',
     screenshot: true,
   },
   {
@@ -220,7 +220,10 @@ const projectList = [
     industry: 'Event Management',
     year: '2026',
     stack: [],
+    summary:
+      'Event-decor and celebrations site for a styling company — themed decor packages, a gallery, a wishlist, and online booking for weddings, showers, and private events.',
     live: 'https://www.thedecorparty.com/',
+    screenshot: true,
   },
   {
     slug: 'cauvery-resort',
