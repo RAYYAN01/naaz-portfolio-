@@ -81,6 +81,22 @@
   color: color-mix(in oklab, var(--color-ivory-200) 55%, transparent);
 }
 
+/* "Designed & engineered in-house" → GitHub profile. No horizontal nudge
+   here — it sits at the row's right edge, where a slide reads as a glitch. */
+.footer__made {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.footer__made:hover,
+.footer__made:focus-visible {
+  transform: none;
+}
+.footer__made svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
 /* Oversized wordmark bleeding off the bottom edge — the signature sign-off. */
 .footer__wordmark {
   display: block;
