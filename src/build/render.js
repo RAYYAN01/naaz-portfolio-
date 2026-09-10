@@ -278,7 +278,7 @@ export function renderContactRows() {
       </div>
       <div class="contact-row">
         <span>Platform</span>
-        <a class="link" href="https://${company.product}">${escape(company.product)}</a>
+        <a class="link" href="https://${company.product}" target="_blank" rel="noopener noreferrer">${escape(company.product)}</a>
       </div>`;
 }
 
