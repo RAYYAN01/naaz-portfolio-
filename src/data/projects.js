@@ -157,8 +157,7 @@ export const projects = [
     stack: [],
     summary:
       'Booking site for an 18-room boutique hotel on Altinho hill, Panaji — room rates, on-site dining, vehicle rentals, and direct reservations.',
-    live: 'https://casa-paradise.vercel.app',
-    status: 'ongoing',
+    live: 'https://www.panjimhotelcasaparadiso.in/',
     screenshot: true,
   },
   {
@@ -198,8 +197,7 @@ export const projects = [
     stack: [],
     summary:
       'Booking site for an Udupi car rental operator — Swift Dzire and Ertiga rentals with drivers, route search, and airport transfers.',
-    live: 'https://thonse-travels-website.vercel.app/',
-    status: 'ongoing',
+    live: 'https://www.thonsetoursandtravels.in/',
     screenshot: true,
   },
   {
@@ -210,7 +208,7 @@ export const projects = [
     industry: 'Event Management',
     year: '2026',
     stack: [],
-    status: 'ongoing',
+    live: 'https://www.thedecorparty.com/',
   },
   {
     slug: 'cauvery-resort',
