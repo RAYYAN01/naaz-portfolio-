@@ -23,6 +23,32 @@ export const company = {
 };
 
 /**
+ * Leadership beyond the founder. Names and titles are given; the taglines
+ * describe the remit of each role, nothing more — no invented tenure,
+ * former employers, or numbers.
+ */
+export const team = [
+  {
+    name: 'Mohammed Rayan',
+    role: 'CTO',
+    initials: 'MR',
+    tagline: 'Owns how every system is architected — built to last, not just to demo.',
+  },
+  {
+    name: 'Tasmia Kouser',
+    role: 'Branch Head',
+    initials: 'TK',
+    tagline: 'Runs delivery and the client relationship end to end, project to project.',
+  },
+  {
+    name: 'Shabiul Hassan Siddiqui',
+    role: 'Technical Head',
+    initials: 'SH',
+    tagline: 'Leads the build team — code review, quality, and getting it shipped.',
+  },
+];
+
+/**
  * Commitments that appear on the proposals as contractual terms. These are
  * real promises the business already makes in writing, which is exactly why
  * they belong on the site — they are the strongest trust signal available.

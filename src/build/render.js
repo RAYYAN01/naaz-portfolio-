@@ -2,7 +2,7 @@ import { industries, icons } from '../data/industries.js';
 import { technologies } from '../data/technology.js';
 import { processSteps } from '../data/process.js';
 import { projects, projectFilters } from '../data/projects.js';
-import { company, guarantees, lynqPlans } from '../data/company.js';
+import { company, guarantees, lynqPlans, team } from '../data/company.js';
 import { faqCategories, faqItems } from '../data/faq.js';
 
 /**
@@ -280,6 +280,20 @@ export function renderContactRows() {
         <span>Platform</span>
         <a class="link" href="https://${company.product}">${escape(company.product)}</a>
       </div>`;
+}
+
+/** Leadership team, shown below the founder on the About page. */
+export function renderTeam() {
+  return team
+    .map(
+      (m) => `<div class="team-member" data-reveal="up" data-reveal-item>
+        <span class="quote__avatar" aria-hidden="true">${escape(m.initials)}</span>
+        <p class="title-3" style="margin-block-start:1rem">${escape(m.name)}</p>
+        <p class="mono-meta">${escape(m.role)}</p>
+        <p class="team-member__tag">${escape(m.tagline)}</p>
+      </div>`,
+    )
+    .join('\n      ');
 }
 
 export function renderProjectFilters() {

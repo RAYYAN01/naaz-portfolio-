@@ -43,6 +43,28 @@
   flex-shrink: 0;
 }
 
+/* --- Leadership team grid (About) -------------------------------------- */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  border-block-start: 1px solid var(--color-line);
+  padding-block-start: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+}
+.team-member .quote__avatar {
+  inline-size: 3rem;
+  block-size: 3rem;
+}
+.team-member .title-3 {
+  margin-block-end: 0.15rem;
+}
+.team-member__tag {
+  margin-block-start: 0.75rem;
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  max-inline-size: 34ch;
+}
+
 /* --- Logo marquee -------------------------------------------------------- */
 .logo-chip {
   display: inline-flex;
