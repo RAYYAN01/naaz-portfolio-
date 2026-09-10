@@ -22,9 +22,21 @@
  * `summary` is likewise optional — omit it rather than guess when nothing is
  * known yet beyond a name and industry; render.js shows a visible
  * <Description on delivery> slot instead of inventing plausible copy.
+ *
+ * DISPLAY ORDER is not the order below — it is fixed by `CATEGORY_ORDER`:
+ * the SaaS product first, then Real Estate, Travel, Event Management, then
+ * everything else. Within each group the file order is kept (the sort is
+ * stable), so a new project can be appended anywhere and still lands in
+ * the right block.
  */
 
-export const projects = [
+const CATEGORY_ORDER = ['Product', 'Real Estate', 'Travel', 'Event Management'];
+const categoryRank = (project) => {
+  const i = CATEGORY_ORDER.indexOf(project.industry);
+  return i === -1 ? CATEGORY_ORDER.length : i;
+};
+
+const projectList = [
   {
     slug: 'lynq-platform',
     title: 'Lynq — AI automation platform',
@@ -305,6 +317,10 @@ export const projects = [
     screenshot: true,
   },
 ];
+
+export const projects = projectList
+  .slice()
+  .sort((a, b) => categoryRank(a) - categoryRank(b));
 
 export const projectFilters = [
   { value: 'all', label: 'All work' },
